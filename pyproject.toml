@@ -75,7 +75,7 @@ filterwarnings = [
 ]
 log_cli = true
 testpaths = [
-    "server/tests",
+    "featureflags/tests",
 ]
 asyncio_mode = "auto"
 
