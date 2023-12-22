@@ -1,0 +1,96 @@
+shell: bash
+
+env:
+  DOCKER_BUILDKIT: "1"
+  COMPOSE_DOCKER_CLI_BUILD: "1"
+  CURRENT_UID:
+    sh: echo "`id -u`:`id -g`"
+
+commands:
+  build-dev:
+    description: build dev image
+    cmd: |
+      docker build \
+        -f Dockerfile \
+        -t featureflags \
+        --target dev \
+        .
+
+  build-test:
+    description: build test image
+    cmd: |
+      docker build \
+        -f Dockerfile \
+        -t featureflags-test \
+        --target test \
+        .
+
+  build-docs:
+    description: build docs image
+    cmd: |
+      docker build \
+        -f Dockerfile \
+        -t featureflags-docs \
+        --target docs \
+        .
+
+  build-examples:
+    description: build examples image
+    cmd: |
+      docker build \
+        -f Dockerfile \
+        -t featureflags-examples \
+        --target examples \
+        .
+
+  test:
+    description: run tests
+    depends: [ build-test ]
+    cmd: |
+      export ARGS="$@"
+      docker-compose run --rm test
+
+  ishell:
+    description: Run app with ipython
+    depends: [ build-examples ]
+    cmd: docker-compose run --rm ishell
+
+  gen-docs:
+    description: generate docs
+    depends: [ build-docs ]
+    cmd: docker-compose run --rm docs
+
+  ruff:
+    description: Run ruff and fix errors
+    depends: [ build-dev ]
+    cmd: |
+      docker-compose run -T --rm featureflags \
+        pdm run ruff ${LETS_COMMAND_ARGS}
+
+  ruff-diff:
+    description: Run ruff to check diff
+    depends: [ build-dev ]
+    cmd: |
+      docker-compose run -T --rm featureflags \
+        pdm run ruff-diff ${LETS_COMMAND_ARGS}
+
+  mypy:
+    description: Run mypy
+    depends: [ build-dev ]
+    cmd: |
+      docker-compose run -T --rm featureflags \
+        pdm run mypy ${LETS_COMMAND_ARGS}
+
+  black:
+    description: Run black
+    depends: [ build-dev ]
+    cmd: |
+      docker-compose run -T --rm featureflags \
+        pdm run black ${LETS_COMMAND_ARGS}
+
+  fmt:
+    description: Run black and ruff
+    depends: [ build-dev ]
+    cmd: |
+      docker-compose run -T --rm featureflags \
+        pdm run fmt

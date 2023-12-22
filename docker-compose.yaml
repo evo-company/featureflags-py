@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  featureflags: &base
+    image: featureflags
+    init: true
+    environment:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      PYTHONIOENCODING: UTF-8
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ./featureflags:/app/featureflags
+      - ./examples:/app/examples
+      - ./.ipython:/app/.ipython
+      # Uncomment to mount local build of `featureflags_protobuf`
+      - ./featureflags_protobuf:/app/featureflags_protobuf
+
+  ishell:
+    <<: *base
+    image: featureflags-examples
+    command: pdm run ipython --ipython-dir=/app/.ipython
+
+  test:
+    <<: *base
+    image: featureflags-test
+    command: pdm run test ${ARGS}
+
+  docs:
+    <<: *base
+    image: featureflags-docs
+    command: sphinx-build -a -b html docs public

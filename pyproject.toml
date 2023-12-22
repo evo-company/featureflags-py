@@ -1,0 +1,193 @@
+[project]
+name = "evo-featureflags-client"
+version = "0.4.0"
+description = "Feature flags client"
+authors = [
+    { name = "d.zakharchuk", email = "d.zakharchuk@smartweb.com.ua" },
+    { name = "m.kindritskiy", email = "m.kindritskiy@smartweb.com.ua" },
+    { name = "Vladimir Magamedov", email = "vladimir@magamedov.com" },
+]
+dependencies = [
+    "evo-featureflags-protobuf==0.2.1", # TODO: change to 0.3.0
+    "hiku==0.7.0rc35",
+    "dataclass-wizard==v0.22.2",
+]
+requires-python = ">=3.8"
+license = { text = "MIT" }
+
+[project.optional-dependencies]
+httpx = ["httpx>=0.24.1"]
+grpclib = ["grpclib>=0.4.6"]
+grpcio = ["grpcio==1.59.0"]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+
+[tool.pdm.scripts]
+test = "python -m pytest {args}"
+docs = "sphinx-build -a -b html docs public"
+ruff = "ruff check featureflags examples {args} --fix"
+ruff-diff = "ruff check featureflags examples {args}"
+mypy = "mypy featureflags examples {args}"
+black = "black featureflags examples {args}"
+fmt = { composite = ["black", "ruff"] }
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ipython>=7.34.0",
+]
+test = [
+    "pytest~=7.1",
+    "pytest-asyncio~=0.18",
+    "faker==18.13",
+    "tox-pdm==0.7.0",
+    "grpclib==0.4.6",
+    "protobuf<4.0.0",
+    "grpcio==1.59.0",
+]
+lint = [
+    "black>=23.3.0",
+    "ruff>=0.1.0",
+    "mypy>=1.4.1",
+]
+docs = [
+    "sphinx==5.3.0",
+    "sphinx-rtd-theme==1.3.0",
+    "sphinxcontrib-asyncio==0.3.0",
+]
+examples = [
+    "aiohttp>=3.8.6",
+    "flask>=2.2.5",
+    "sanic>=23.3.0",
+    "grpclib>=0.4.6",
+    "protobuf<4.0.0",
+    "grpcio==1.59.0",
+    "httpx>=0.24.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "-p no:warnings -p no:cacheprovider -q --tb=native"
+filterwarnings = [
+    "ignore::DeprecationWarning:google.*"
+]
+log_cli = true
+testpaths = [
+    "server/tests",
+]
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 80
+target-version = ['py37']
+extend-exclude = '''
+/(
+  | .git
+  | __pycache__
+  | __pypackages__
+  | .venv
+  | venv
+  | .ve
+)/
+'''
+
+[tool.ruff]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # Pyflakes
+    "C90", # McCabe
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "ASYNC", # flake8-async
+    "S", # bandit
+    "DTZ", # flake8-datetimez
+    "A", # flake8-builtins
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "T20", # flake8-print
+    "SIM", # flake8-simplify
+    "ERA", # eradicate
+    "PL", # pylint
+    "RUF", # ruff-specific
+]
+ignore = [
+    "S101",
+    "S104",
+    "S105",
+    "DTZ003",
+    "DTZ006",
+    "A003",
+    "B008",
+]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    ".venv",
+    "venv",
+    ".ve",
+    "__pycache__",
+]
+line-length = 80
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py37"
+
+[tool.ruff.per-file-ignores]
+"featureflags/tests/*" = [
+    "A002",
+    "E501",
+    "S101",
+    "S105",
+    "S106",
+    "PLR2004",
+    "PLR0913",
+    "DTZ005",
+    "DTZ003",
+    "T201",
+]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["featureflags"]
+
+[tool.mypy]
+python_version = "3.7"
+follow_imports = "normal"
+pretty = true
+strict_optional = false
+warn_no_return = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+exclude = [
+    ".git",
+    "__pycache__",
+    "__pypackages__",
+    ".venv",
+    "venv",
+    ".ve",
+]
