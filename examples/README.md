@@ -1,12 +1,15 @@
 Examples
 ========
 
-Here you can find examples for:
+TODO: refactor examples
 
-- `AIOHTTP`_
-- `Sanic`_
-- `Flask`_
-- `WSGI`_
+Here you can find examples for gRPC and HTTP clients with:
+
+- `AIOHTTP`
+- `Sanic`
+- `Flask`
+- `WSGI`
+- `httpx`
 
 Prerequisites:
 

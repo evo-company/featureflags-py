@@ -1,13 +1,13 @@
 name: Build & publish
 
+# TODO: Setup release workflow
 on:
   push:
     branches: [ "**" ]
     tags:
     - "client-v*"
-    - "proto-v*"
-  pull_request:
-    branches: [main]
+#  pull_request:
+#    branches: [main]
 
 jobs:
   deploy-client:
@@ -26,22 +26,4 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Upload package to pypi.org
-      run: pdm publish --username ${{ secrets.TWINE_USERNAME }} --password ${{ secrets.TWINE_PASSWORD }}
-
-  deploy-proto:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./protobuf
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/proto-')
-    strategy:
-      matrix:
-        python-version: [3.7]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Upload package to pypi.org
-      run: pdm publish --username ${{ secrets.TWINE_USERNAME }} --password ${{ secrets.TWINE_PASSWORD }}
+      run: pdm publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
