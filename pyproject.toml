@@ -28,10 +28,10 @@ build-backend = "pdm.backend"
 [tool.pdm.scripts]
 test = "python -m pytest {args}"
 docs = "sphinx-build -a -b html docs public"
-ruff = "ruff check featureflags examples {args} --fix"
-ruff-diff = "ruff check featureflags examples {args}"
-mypy = "mypy featureflags examples {args}"
-black = "black featureflags examples {args}"
+ruff = "ruff check featureflags_client examples {args} --fix"
+ruff-diff = "ruff check featureflags_client examples {args}"
+mypy = "mypy featureflags_client examples {args}"
+black = "black featureflags_client examples {args}"
 fmt = { composite = ["black", "ruff"] }
 
 [tool.pdm.dev-dependencies]
@@ -76,7 +76,7 @@ filterwarnings = [
 ]
 log_cli = true
 testpaths = [
-    "featureflags/tests",
+    "featureflags_client/tests",
 ]
 asyncio_mode = "auto"
 
@@ -156,7 +156,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 target-version = "py37"
 
 [tool.ruff.per-file-ignores]
-"featureflags/tests/*" = [
+"featureflags_client/tests/*" = [
     "A002",
     "E501",
     "S101",
@@ -173,7 +173,7 @@ target-version = "py37"
 max-complexity = 10
 
 [tool.ruff.isort]
-known-first-party = ["featureflags"]
+known-first-party = ["featureflags_client"]
 
 [tool.mypy]
 python_version = "3.7"

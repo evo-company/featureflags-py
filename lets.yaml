@@ -12,7 +12,7 @@ commands:
     cmd: |
       docker build \
         -f Dockerfile \
-        -t featureflags \
+        -t featureflags-client \
         --target dev \
         .
 
@@ -21,7 +21,7 @@ commands:
     cmd: |
       docker build \
         -f Dockerfile \
-        -t featureflags-test \
+        -t featureflags-client-test \
         --target test \
         .
 
@@ -30,7 +30,7 @@ commands:
     cmd: |
       docker build \
         -f Dockerfile \
-        -t featureflags-docs \
+        -t featureflags-client-docs \
         --target docs \
         .
 
@@ -39,7 +39,7 @@ commands:
     cmd: |
       docker build \
         -f Dockerfile \
-        -t featureflags-examples \
+        -t featureflags-client-examples \
         --target examples \
         .
 
@@ -64,33 +64,33 @@ commands:
     description: Run ruff and fix errors
     depends: [ build-dev ]
     cmd: |
-      docker-compose run -T --rm featureflags \
+      docker-compose run -T --rm featureflags-client \
         pdm run ruff ${LETS_COMMAND_ARGS}
 
   ruff-diff:
     description: Run ruff to check diff
     depends: [ build-dev ]
     cmd: |
-      docker-compose run -T --rm featureflags \
+      docker-compose run -T --rm featureflags-client \
         pdm run ruff-diff ${LETS_COMMAND_ARGS}
 
   mypy:
     description: Run mypy
     depends: [ build-dev ]
     cmd: |
-      docker-compose run -T --rm featureflags \
+      docker-compose run -T --rm featureflags-client \
         pdm run mypy ${LETS_COMMAND_ARGS}
 
   black:
     description: Run black
     depends: [ build-dev ]
     cmd: |
-      docker-compose run -T --rm featureflags \
+      docker-compose run -T --rm featureflags-client \
         pdm run black ${LETS_COMMAND_ARGS}
 
   fmt:
     description: Run black and ruff
     depends: [ build-dev ]
     cmd: |
-      docker-compose run -T --rm featureflags \
+      docker-compose run -T --rm featureflags-client \
         pdm run fmt
