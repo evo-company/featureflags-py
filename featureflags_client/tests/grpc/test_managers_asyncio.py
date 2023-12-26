@@ -5,9 +5,9 @@ import pytest
 from google.protobuf import wrappers_pb2
 from grpclib.client import Channel
 
-from featureflags.grpc.flags import Client, Types, Variable
-from featureflags.grpc.managers.asyncio import AsyncIOManager
-from featureflags.grpc.state import get_grpc_graph_query
+from featureflags_client.grpc.flags import Client, Types, Variable
+from featureflags_client.grpc.managers.asyncio import AsyncIOManager
+from featureflags_client.grpc.state import get_grpc_graph_query
 from featureflags_protobuf import graph_pb2, service_pb2
 
 f = faker.Faker()

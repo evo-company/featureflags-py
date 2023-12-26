@@ -4,8 +4,8 @@ from contextlib import contextmanager
 from enum import EnumMeta
 from typing import Any, Dict, Optional, Union
 
-from featureflags.grpc.flags import Flags
-from featureflags.grpc.managers.base import AbstractManager
+from featureflags_client.grpc.flags import Flags
+from featureflags_client.grpc.managers.base import AbstractManager
 
 
 class FeatureFlagsClient:

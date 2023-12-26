@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Callable, Dict, Optional
 
 if TYPE_CHECKING:
-    from featureflags.grpc.flags import Tracer
+    from featureflags_client.grpc.flags import Tracer
 
 
 class AbstractManager(ABC):

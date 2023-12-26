@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Callable, Dict, List, Optional
 
-from featureflags.http.conditions import update_flags_state
-from featureflags.http.types import (
+from featureflags_client.http.conditions import update_flags_state
+from featureflags_client.http.types import (
     Flag,
     Variable,
 )

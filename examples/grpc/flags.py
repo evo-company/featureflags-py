@@ -1,4 +1,4 @@
-from featureflags.grpc.types import Types, Variable
+from featureflags_client.grpc.types import Types, Variable
 
 REQUEST_QUERY = Variable("request.query", Types.STRING)
 

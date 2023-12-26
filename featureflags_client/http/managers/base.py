@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from enum import EnumMeta
 from typing import Callable, Dict, List, Mapping, Optional, Type, Union
 
-from featureflags.grpc.utils import intervals_gen
-from featureflags.http.state import HttpState
-from featureflags.http.types import Variable
-from featureflags.http.utils import coerce_defaults
+from featureflags_client.grpc.utils import intervals_gen
+from featureflags_client.http.state import HttpState
+from featureflags_client.http.types import Variable
+from featureflags_client.http.utils import coerce_defaults
 
 
 class AbstractManager(ABC):

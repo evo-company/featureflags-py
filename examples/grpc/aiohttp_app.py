@@ -4,8 +4,8 @@ import flags
 from aiohttp import web
 from grpclib.client import Channel
 
-from featureflags.grpc.client import FeatureFlagsClient
-from featureflags.grpc.managers.asyncio import AsyncIOManager
+from featureflags_client.grpc.client import FeatureFlagsClient
+from featureflags_client.grpc.managers.asyncio import AsyncIOManager
 
 log = logging.getLogger(__name__)
 

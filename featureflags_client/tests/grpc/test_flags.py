@@ -5,8 +5,8 @@ import faker
 import pytest
 from google.protobuf.timestamp_pb2 import Timestamp
 
-from featureflags.grpc.flags import Client, Flags, StatsCollector, Tracer
-from featureflags.grpc.managers.dummy import DummyManager
+from featureflags_client.grpc.flags import Client, Flags, StatsCollector, Tracer
+from featureflags_client.grpc.managers.dummy import DummyManager
 from featureflags_protobuf.graph_pb2 import Check, Result, Variable
 from featureflags_protobuf.service_pb2 import FlagUsage
 

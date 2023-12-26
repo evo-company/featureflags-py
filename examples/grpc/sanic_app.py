@@ -6,8 +6,8 @@ from sanic import Sanic
 from sanic.log import LOGGING_CONFIG_DEFAULTS
 from sanic.response import text
 
-from featureflags.grpc.client import FeatureFlagsClient
-from featureflags.grpc.managers.asyncio import AsyncIOManager
+from featureflags_client.grpc.client import FeatureFlagsClient
+from featureflags_client.grpc.managers.asyncio import AsyncIOManager
 
 app = Sanic(configure_logging=False)
 

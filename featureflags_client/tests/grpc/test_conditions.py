@@ -2,7 +2,7 @@ import faker
 import pytest
 from google.protobuf.wrappers_pb2 import BoolValue
 
-from featureflags.grpc.conditions import (
+from featureflags_client.grpc.conditions import (
     OPS,
     check_proc,
     contains,

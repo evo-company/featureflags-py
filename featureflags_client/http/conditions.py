@@ -1,7 +1,7 @@
 import re
 from typing import Any, Callable, Dict, List, Optional, Set
 
-from featureflags.http.types import Check, Flag, Operator
+from featureflags_client.http.types import Check, Flag, Operator
 
 _UNDEFINED = object()
 

@@ -6,8 +6,8 @@ from flask import Flask, g, request
 from grpc import insecure_channel
 from werkzeug.local import LocalProxy
 
-from featureflags.grpc.client import FeatureFlagsClient
-from featureflags.grpc.managers.sync import SyncManager
+from featureflags_client.grpc.client import FeatureFlagsClient
+from featureflags_client.grpc.managers.sync import SyncManager
 
 app = Flask(__name__)
 

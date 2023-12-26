@@ -1,7 +1,7 @@
 import pytest
 
-from featureflags.grpc.conditions import load_flags
-from featureflags.grpc.flags import AbstractManager
+from featureflags_client.grpc.conditions import load_flags
+from featureflags_client.grpc.flags import AbstractManager
 
 
 class SimpleManager(AbstractManager):

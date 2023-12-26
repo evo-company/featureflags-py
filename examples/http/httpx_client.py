@@ -4,8 +4,8 @@ import config
 import flags
 from aiohttp import web
 
-from featureflags.http.client import FeatureFlagsClient
-from featureflags.http.managers.httpx import AsyncHttpManager
+from featureflags_client.http.client import FeatureFlagsClient
+from featureflags_client.http.managers.httpx import AsyncHttpManager
 
 log = logging.getLogger(__name__)
 

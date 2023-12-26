@@ -1,5 +1,5 @@
-from featureflags.grpc.flags import Client
-from featureflags.grpc.managers.dummy import DummyManager
+from featureflags_client.grpc.flags import Client
+from featureflags_client.grpc.managers.dummy import DummyManager
 
 
 def test():

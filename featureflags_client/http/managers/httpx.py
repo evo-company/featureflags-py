@@ -4,18 +4,18 @@ from dataclasses import asdict
 from enum import EnumMeta
 from typing import Any, Callable, Dict, List, Mapping, Optional, Type, Union
 
-from featureflags.http.constants import Endpoints
-from featureflags.http.managers.base import (
+from featureflags_client.http.constants import Endpoints
+from featureflags_client.http.managers.base import (
     AsyncAbstractManager,
 )
-from featureflags.http.types import (
+from featureflags_client.http.types import (
     PreloadFlagsRequest,
     PreloadFlagsResponse,
     SyncFlagsRequest,
     SyncFlagsResponse,
     Variable,
 )
-from featureflags.http.utils import custom_asdict_factory
+from featureflags_client.http.utils import custom_asdict_factory
 
 try:
     import httpx

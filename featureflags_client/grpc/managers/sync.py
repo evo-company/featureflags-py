@@ -2,12 +2,12 @@ import logging
 from datetime import datetime, timedelta
 from typing import Callable, Dict, List, Optional
 
-from featureflags.grpc.managers.base import AbstractManager
-from featureflags.grpc.state import GrpcState
-from featureflags.grpc.stats_collector import StatsCollector
-from featureflags.grpc.tracer import Tracer
-from featureflags.grpc.types import Variable
-from featureflags.grpc.utils import intervals_gen
+from featureflags_client.grpc.managers.base import AbstractManager
+from featureflags_client.grpc.state import GrpcState
+from featureflags_client.grpc.stats_collector import StatsCollector
+from featureflags_client.grpc.tracer import Tracer
+from featureflags_client.grpc.types import Variable
+from featureflags_client.grpc.utils import intervals_gen
 from featureflags_protobuf.service_pb2 import FlagUsage as FlagUsageProto
 from featureflags_protobuf.service_pb2_grpc import FeatureFlagsStub
 

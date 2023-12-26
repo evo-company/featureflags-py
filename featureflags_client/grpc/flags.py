@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
-from featureflags.grpc.managers.base import AbstractManager
-from featureflags.grpc.tracer import Tracer
+from featureflags_client.grpc.managers.base import AbstractManager
+from featureflags_client.grpc.tracer import Tracer
 
 
 class Flags:

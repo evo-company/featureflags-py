@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from featureflags.http.managers.base import AbstractManager
+from featureflags_client.http.managers.base import AbstractManager
 
 
 class Flags:

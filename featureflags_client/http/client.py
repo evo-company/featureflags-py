@@ -1,8 +1,8 @@
 from contextlib import contextmanager
 from typing import Any, Dict, Optional, cast
 
-from featureflags.http.flags import Flags
-from featureflags.http.managers.base import (
+from featureflags_client.http.flags import Flags
+from featureflags_client.http.managers.base import (
     AbstractManager,
     AsyncAbstractManager,
 )

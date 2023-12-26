@@ -4,8 +4,8 @@ from typing import Any, Callable, Dict, List, Optional
 from hiku.builder import Q, build
 from hiku.export.protobuf import export, query_pb2
 
-from featureflags.grpc.conditions import load_flags
-from featureflags.grpc.types import Variable
+from featureflags_client.grpc.conditions import load_flags
+from featureflags_client.grpc.types import Variable
 from featureflags_protobuf import service_pb2
 from featureflags_protobuf.service_pb2 import FlagUsage as FlagUsageProto
 

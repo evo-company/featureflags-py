@@ -4,8 +4,8 @@ import config
 import flags
 from grpc import insecure_channel
 
-from featureflags.grpc.client import FeatureFlagsClient
-from featureflags.grpc.managers.sync import SyncManager
+from featureflags_client.grpc.client import FeatureFlagsClient
+from featureflags_client.grpc.managers.sync import SyncManager
 
 
 def make_app():
