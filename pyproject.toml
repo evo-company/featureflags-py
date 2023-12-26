@@ -9,7 +9,7 @@ authors = [
 ]
 dependencies = [
     "evo-featureflags-protobuf==0.2.1", # TODO: change to 0.3.0
-    "hiku==0.7.0rc35",
+    "hiku==0.7.1",
     "dataclass-wizard==v0.22.2",
 ]
 requires-python = ">=3.8"

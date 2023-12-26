@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "examples", "grpcio", "grpclib", "httpx", "lint", "test"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:d43ffa74acd26375e7d4bbd17ec36e53e5caf53f54ba0887924882a6e10e0742"
+content_hash = "sha256:98dabfb8ff143b6324895e5a6e5b9ab4bc2902d616ff08634152bc3bcf9b7087"
 
 [[package]]
 name = "aiofiles"
@@ -673,12 +673,12 @@ files = [
 
 [[package]]
 name = "hiku"
-version = "0.7.0rc35"
+version = "0.7.1"
 requires_python = ">=3.7"
 summary = "Library to implement Graph APIs"
 files = [
-    {file = "hiku-0.7.0rc35-py3-none-any.whl", hash = "sha256:47b3cb06d9fa3218f2f734aa8bc742ca8d5860ae7bfb0f6fb950248bc006525c"},
-    {file = "hiku-0.7.0rc35.tar.gz", hash = "sha256:01ba46ba059674f9549033e8830d2499b23545ed5b87fc6001de1c4e8c6c2622"},
+    {file = "hiku-0.7.1-py3-none-any.whl", hash = "sha256:82630eb9a50a55d02a50bdc09b7ce704a7f5ccd518c12af5cd9ddfef1b8d54f9"},
+    {file = "hiku-0.7.1.tar.gz", hash = "sha256:8456a617ffbc72adc4849c379ad99757579b426fde2e47843573289a59cfca36"},
 ]
 
 [[package]]
