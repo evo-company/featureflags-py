@@ -9,16 +9,15 @@ authors = [
 ]
 dependencies = [
     "evo-featureflags-protobuf==0.2.1", # TODO: change to 0.3.0
-    "hiku==0.7.1",
     "dataclass-wizard==v0.22.2",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = { text = "MIT" }
 
 [project.optional-dependencies]
 httpx = ["httpx>=0.24.1"]
-grpclib = ["grpclib>=0.4.6"]
-grpcio = ["grpcio==1.59.0"]
+grpclib = ["grpclib>=0.4.6", "hiku==0.7.1"]
+grpcio = ["grpcio==1.59.0", "hiku==0.7.1"]
 
 [build-system]
 requires = ["pdm-backend"]
@@ -47,6 +46,7 @@ test = [
     "grpclib==0.4.6",
     "protobuf<4.0.0",
     "grpcio==1.59.0",
+    "hiku==0.7.1",
 ]
 lint = [
     "black>=23.3.0",
@@ -66,6 +66,7 @@ examples = [
     "protobuf<4.0.0",
     "grpcio==1.59.0",
     "httpx>=0.24.1",
+    "hiku==0.7.1",
 ]
 
 [tool.pytest.ini_options]

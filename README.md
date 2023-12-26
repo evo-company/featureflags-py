@@ -5,7 +5,7 @@ See ``examples`` directory for complete examples for some major Web frameworks.
 Overview
 --------
 
-Client supports Python >=3.7.
+Client supports Python >=3.9.
 
 
 Installation
