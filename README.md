@@ -19,3 +19,9 @@ Development
 
 Install dependencies:
 - ``pdm install -d``
+
+Pre-commit
+
+``./scripts/enable-hooks.sh``
+
+``./scripts/disable-hooks.sh``

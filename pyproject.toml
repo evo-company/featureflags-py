@@ -33,7 +33,7 @@ test = "python -m pytest {args}"
 docs = "sphinx-build -a -b html docs public"
 ruff = "ruff check featureflags_client examples {args} --fix"
 ruff-diff = "ruff check featureflags_client examples {args}"
-mypy = "mypy featureflags_client examples {args}"
+mypy = "mypy featureflags_client {args}"
 black = "black featureflags_client examples {args}"
 fmt = { composite = ["black", "ruff"] }
 
@@ -195,4 +195,7 @@ exclude = [
     ".venv",
     "venv",
     ".ve",
+    "featureflags_client/tests",
+    "featureflags_protobuf",
+    "examples",
 ]
