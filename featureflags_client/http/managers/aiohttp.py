@@ -11,18 +11,18 @@ from featureflags_client.http.types import (
 )
 
 try:
-    import httpx
+    import aiohttp
 except ImportError:
     raise ImportError(
-        "`httpx` is not installed, please install it to use HttpxManager "
-        "like this `pip install 'featureflags-client[httpx]'`"
+        "`aiohttp` is not installed, please install it to use AiohttpManager "
+        "like this `pip install 'featureflags-client[aiohttp]'`"
     ) from None
 
 log = logging.getLogger(__name__)
 
 
-class HttpxManager(AsyncBaseManager):
-    """Feature flags manager for asyncio apps with `httpx` client."""
+class AiohttpManager(AsyncBaseManager):
+    """Feature flags manager for asyncio apps with `aiohttp` client."""
 
     def __init__(  # noqa: PLR0913
         self,
@@ -41,10 +41,10 @@ class HttpxManager(AsyncBaseManager):
             request_timeout,
             refresh_interval,
         )
-        self._session = httpx.AsyncClient(base_url=url)
+        self._session = aiohttp.ClientSession(base_url=url)
 
     async def close_client(self) -> None:
-        await self._session.aclose()
+        await self._session.close()
 
     async def _post(
         self,
@@ -52,11 +52,12 @@ class HttpxManager(AsyncBaseManager):
         payload: Dict[str, Any],
         timeout: int,
     ) -> Dict[str, Any]:
-        response = await self._session.post(
-            url=httpx.URL(url.value),
+        async with self._session.post(
+            url=url.value,
             json=payload,
             timeout=timeout,
-        )
-        response.raise_for_status()
-        response_data = response.json()
+        ) as response:
+            response.raise_for_status()
+            response_data = await response.json()
+
         return response_data

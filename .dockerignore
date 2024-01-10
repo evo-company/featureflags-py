@@ -30,7 +30,6 @@ README.md
 .lets
 helm
 .ipython
-.ptpython
 .secrets
 
 # Ignore IDE settings

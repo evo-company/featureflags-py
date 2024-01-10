@@ -18,6 +18,8 @@ license = { text = "MIT" }
 httpx = ["httpx>=0.24.1"]
 grpclib = ["grpclib>=0.4.6", "hiku==0.7.1"]
 grpcio = ["grpcio==1.59.0", "hiku==0.7.1"]
+aiohttp = ["aiohttp>=3.9.1"]
+requests = ["requests>=2.31.0"]
 
 [build-system]
 requires = ["pdm-backend"]
@@ -26,6 +28,7 @@ build-backend = "pdm.backend"
 [tool.pdm]
 
 [tool.pdm.scripts]
+ishell = "ptpython --asyncio --dark-bg --history-file=.ptpython {args}"
 test = "python -m pytest {args}"
 docs = "sphinx-build -a -b html docs public"
 ruff = "ruff check featureflags_client examples {args} --fix"
@@ -36,7 +39,7 @@ fmt = { composite = ["black", "ruff"] }
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "ipython>=7.34.0",
+    "ptpython>=3.0.25",
 ]
 test = [
     "pytest~=7.1",
@@ -66,6 +69,7 @@ examples = [
     "protobuf<4.0.0",
     "grpcio==1.59.0",
     "httpx>=0.24.1",
+    "requests>=2.31.0",
     "hiku==0.7.1",
 ]
 

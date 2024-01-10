@@ -5,13 +5,13 @@ import flags
 from aiohttp import web
 
 from featureflags_client.http.client import FeatureFlagsClient
-from featureflags_client.http.managers.httpx import HttpxManager
+from featureflags_client.http.managers.aiohttp import AiohttpManager
 
 log = logging.getLogger(__name__)
 
 
 async def on_start(app):
-    app["ff_manager"] = HttpxManager(
+    app["ff_manager"] = AiohttpManager(
         url=config.FF_URL,
         project=config.FF_PROJECT,
         variables=[flags.REQUEST_QUERY],

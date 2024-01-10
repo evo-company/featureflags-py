@@ -98,7 +98,7 @@ class SyncManager(AbstractManager):
         log.debug("Exchange reply: %r", reply)
         self._state.apply_reply(reply)
 
-    def get(self, name: str) -> Callable[[Dict], bool] | None:
+    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         if datetime.utcnow() >= self._next_exchange:
             try:
                 self._exchange(self._exchange_timeout)

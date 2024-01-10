@@ -4,25 +4,27 @@ from typing import Any, Dict, List, Mapping, Type, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.managers.base import (
-    AsyncBaseManager,
+    BaseManager,
 )
 from featureflags_client.http.types import (
     Variable,
 )
 
 try:
-    import httpx
+    from urllib.parse import urljoin
+
+    import requests
 except ImportError:
     raise ImportError(
-        "`httpx` is not installed, please install it to use HttpxManager "
-        "like this `pip install 'featureflags-client[httpx]'`"
+        "`requests` is not installed, please install it to use RequestsManager "
+        "like this `pip install 'featureflags-client[requests]'`"
     ) from None
 
 log = logging.getLogger(__name__)
 
 
-class HttpxManager(AsyncBaseManager):
-    """Feature flags manager for asyncio apps with `httpx` client."""
+class RequestsManager(BaseManager):
+    """Feature flags manager for sync apps with `requests` client."""
 
     def __init__(  # noqa: PLR0913
         self,
@@ -41,19 +43,17 @@ class HttpxManager(AsyncBaseManager):
             request_timeout,
             refresh_interval,
         )
-        self._session = httpx.AsyncClient(base_url=url)
+        self._session = requests.Session()
+        self._session.headers.update({"Content-Type": "application/json"})
 
-    async def close_client(self) -> None:
-        await self._session.aclose()
-
-    async def _post(
+    def _post(
         self,
         url: Endpoints,
         payload: Dict[str, Any],
         timeout: int,
     ) -> Dict[str, Any]:
-        response = await self._session.post(
-            url=httpx.URL(url.value),
+        response = self._session.post(
+            url=urljoin(self.url, url.value),
             json=payload,
             timeout=timeout,
         )

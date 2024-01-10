@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from featureflags_client.http.managers.base import AbstractManager
+from featureflags_client.http.managers.base import BaseManager
 
 
 class Flags:
@@ -10,7 +10,7 @@ class Flags:
 
     def __init__(
         self,
-        manager: AbstractManager,
+        manager: BaseManager,
         ctx: Optional[Dict[str, Any]] = None,
         overrides: Optional[Dict[str, bool]] = None,
     ) -> None:
