@@ -7,9 +7,17 @@ if TYPE_CHECKING:
 
 class AbstractManager(ABC):
     @abstractmethod
-    def get(self, name: str) -> Callable[[Dict], bool] | None:
+    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         pass
 
     @abstractmethod
     def add_trace(self, tracer: Optional["Tracer"]) -> None:
+        pass
+
+    @abstractmethod
+    def preload(
+        self,
+        timeout: Optional[int] = None,
+        defaults: Optional[Dict] = None,
+    ) -> None:
         pass

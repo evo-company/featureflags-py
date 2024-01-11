@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, Generator, Optional, cast
 
 from featureflags_client.http.flags import Flags
 from featureflags_client.http.managers.base import (
@@ -22,7 +22,7 @@ class FeatureFlagsClient:
         ctx: Optional[Dict[str, Any]] = None,
         *,
         overrides: Optional[Dict[str, bool]] = None,
-    ) -> Flags:
+    ) -> Generator[Flags, None, None]:
         """
         Context manager to wrap your request handling code and get actual
         flags values.

@@ -41,7 +41,7 @@ RUN pdm install --no-lock -G dev -G lint --no-editable
 FROM dev as examples
 RUN pdm install --no-lock -G examples
 
-FROM base as test
+FROM dev as test
 RUN pdm install --no-lock -G test
 
 FROM base as docs

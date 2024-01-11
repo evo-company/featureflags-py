@@ -1,6 +1,6 @@
 import logging
 from enum import EnumMeta
-from typing import Any, Dict, List, Mapping, Type, Union
+from typing import Any, Dict, List, Type, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.managers.base import (
@@ -31,7 +31,7 @@ class RequestsManager(BaseManager):
         url: str,
         project: str,
         variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Mapping[str, bool]],
+        defaults: Union[EnumMeta, Type, Dict[str, bool]],
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:

@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List, Optional
 
 from hiku.builder import Q, build
-from hiku.export.protobuf import export, query_pb2
+from hiku.export.protobuf import export
+from hiku.query import Node as QueryNode
 
 from featureflags_client.grpc.conditions import load_flags
 from featureflags_client.grpc.types import Variable
@@ -10,7 +11,7 @@ from featureflags_protobuf import service_pb2
 from featureflags_protobuf.service_pb2 import FlagUsage as FlagUsageProto
 
 
-def get_grpc_graph_query(project_name: str) -> query_pb2.Node:
+def get_grpc_graph_query(project_name: str) -> QueryNode:
     return export(
         build(
             [

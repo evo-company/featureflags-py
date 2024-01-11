@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "examples", "lint", "test", "aiohttp", "requests", "ptpython"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:b9466c77ac89895f60710d5a7a0756b66e3deb5e8d1ff3c08692edef829c3899"
+content_hash = "sha256:a6fdccb22a846505eb04fe3cadea791761c649387b6caf5adfcb2787a7f7cc39"
 
 [[package]]
 name = "aiofiles"
@@ -1474,6 +1474,31 @@ files = [
 ]
 
 [[package]]
+name = "types-protobuf"
+version = "4.24.0.20240106"
+requires_python = ">=3.8"
+summary = "Typing stubs for protobuf"
+groups = ["dev"]
+files = [
+    {file = "types-protobuf-4.24.0.20240106.tar.gz", hash = "sha256:024f034f3b5e2bb2bbff55ebc4d591ed0d2280d90faceedcb148b9e714a3f3ee"},
+    {file = "types_protobuf-4.24.0.20240106-py3-none-any.whl", hash = "sha256:0612ef3156bd80567460a15ac7c109b313f6022f1fee04b4d922ab2789baab79"},
+]
+
+[[package]]
+name = "types-requests"
+version = "2.31.0.20240106"
+requires_python = ">=3.8"
+summary = "Typing stubs for requests"
+groups = ["dev"]
+dependencies = [
+    "urllib3>=2",
+]
+files = [
+    {file = "types-requests-2.31.0.20240106.tar.gz", hash = "sha256:0e1c731c17f33618ec58e022b614a1a2ecc25f7dc86800b36ef341380402c612"},
+    {file = "types_requests-2.31.0.20240106-py3-none-any.whl", hash = "sha256:da997b3b6a72cc08d09f4dba9802fdbabc89104b35fe24ee588e674037689354"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.9.0"
 requires_python = ">=3.8"
@@ -1554,7 +1579,7 @@ name = "urllib3"
 version = "2.1.0"
 requires_python = ">=3.8"
 summary = "HTTP library with thread-safe connection pooling, file post, and more."
-groups = ["docs", "examples", "requests"]
+groups = ["dev", "docs", "examples", "requests"]
 files = [
     {file = "urllib3-2.1.0-py3-none-any.whl", hash = "sha256:55901e917a5896a349ff771be919f8bd99aff50b79fe58fec595eb37bbc56bb3"},
     {file = "urllib3-2.1.0.tar.gz", hash = "sha256:df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"},

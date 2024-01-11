@@ -1,6 +1,6 @@
 from collections import OrderedDict, defaultdict
 from datetime import datetime, timedelta
-from typing import Dict, List
+from typing import DefaultDict, Dict, List
 
 from google.protobuf.timestamp_pb2 import Timestamp as TimestampProto
 
@@ -13,7 +13,9 @@ class StatsCollector:
     """
 
     def __init__(self) -> None:
-        self._acc = defaultdict(lambda: defaultdict(lambda: [0, 0]))
+        self._acc: DefaultDict = defaultdict(
+            lambda: defaultdict(lambda: [0, 0])
+        )
 
     def update(
         self,
@@ -36,7 +38,7 @@ class StatsCollector:
                 interval_pb = TimestampProto()
                 interval_pb.FromDatetime(interval)
                 stats.append(
-                    FlagUsageProto(
+                    FlagUsageProto(  # type: ignore
                         name=flag_name,
                         interval=interval_pb,
                         negative_count=neg_count,

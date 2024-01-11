@@ -81,15 +81,6 @@ commands:
       docker-compose run -T --rm featureflags-client \
         pdm run mypy ${LETS_COMMAND_ARGS}
 
-  mypy-staged:
-    description: Run mypy for staged files
-    depends: [ build-dev ]
-    cmd: |
-      STAGED_PY=$(git diff --staged --diff-filter=d --name-only '*.py' | tr '\r\n' ' ')
-      echo $STAGED_PY
-      docker-compose run -T --rm featureflags-client \
-        pdm run mypy ${STAGED_PY} ${LETS_COMMAND_ARGS}
-
   black:
     description: Run black
     depends: [ build-dev ]

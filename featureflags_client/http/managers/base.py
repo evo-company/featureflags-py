@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from enum import EnumMeta
-from typing import Any, Callable, Dict, List, Mapping, Optional, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Type, Union
 
 from featureflags_client.grpc.utils import intervals_gen
 from featureflags_client.http.constants import Endpoints
@@ -34,7 +34,7 @@ class BaseManager(ABC):
         url: str,
         project: str,
         variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Mapping[str, bool]],
+        defaults: Union[EnumMeta, Type, Dict[str, bool]],
         request_timeout: int = 5,
         refresh_interval: int = 60,  # 1 minute.
     ) -> None:
@@ -146,7 +146,7 @@ class AsyncBaseManager(BaseManager):
         url: str,
         project: str,
         variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Mapping[str, bool]],
+        defaults: Union[EnumMeta, Type, Dict[str, bool]],
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:
@@ -161,7 +161,7 @@ class AsyncBaseManager(BaseManager):
         self._refresh_task: Optional[asyncio.Task] = None
 
     @abstractmethod
-    async def _post(
+    async def _post(  # type: ignore
         self,
         url: Endpoints,
         payload: Dict[str, Any],
@@ -176,7 +176,7 @@ class AsyncBaseManager(BaseManager):
     def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         return self._state.get(name)
 
-    async def preload(self) -> None:
+    async def preload(self) -> None:  # type: ignore
         """
         Preload flags from the server.
         """
@@ -204,7 +204,7 @@ class AsyncBaseManager(BaseManager):
         response = PreloadFlagsResponse.from_dict(response_raw)
         self._state.update(response.flags, response.version)
 
-    async def sync(self) -> None:
+    async def sync(self) -> None:  # type: ignore
         payload = SyncFlagsRequest(
             project=self._state.project,
             flags=self._state.flags,

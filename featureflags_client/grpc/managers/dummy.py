@@ -23,7 +23,7 @@ class DummyManager(AbstractManager):
 
     """
 
-    def get(self, name: str) -> Callable[[Dict], bool] | None:
+    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         return None
 
     def add_trace(self, tracer: Optional[Tracer]) -> None:

@@ -15,9 +15,9 @@ requires-python = ">=3.9"
 license = { text = "MIT" }
 
 [project.optional-dependencies]
-httpx = ["httpx>=0.24.1"]
 grpclib = ["grpclib>=0.4.6", "hiku==0.7.1"]
 grpcio = ["grpcio==1.59.0", "hiku==0.7.1"]
+httpx = ["httpx>=0.24.1"]
 aiohttp = ["aiohttp>=3.9.1"]
 requests = ["requests>=2.31.0"]
 
@@ -55,6 +55,8 @@ lint = [
     "black>=23.3.0",
     "ruff>=0.1.0",
     "mypy>=1.4.1",
+    "types-requests>=2.31.0.20240106",
+    "types-protobuf>=4.24.0.20240106",
 ]
 docs = [
     "sphinx==5.3.0",
@@ -86,7 +88,7 @@ asyncio_mode = "auto"
 
 [tool.black]
 line-length = 80
-target-version = ['py37']
+target-version = ['py38']
 extend-exclude = '''
 /(
   | .git
@@ -157,7 +159,7 @@ exclude = [
 line-length = 80
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py37"
+target-version = "py38"
 
 [tool.ruff.per-file-ignores]
 "featureflags_client/tests/*" = [
@@ -180,8 +182,8 @@ max-complexity = 10
 known-first-party = ["featureflags_client"]
 
 [tool.mypy]
-python_version = "3.7"
-follow_imports = "normal"
+python_version = "3.8"
+follow_imports = "skip"
 pretty = true
 strict_optional = false
 warn_no_return = true
@@ -196,6 +198,13 @@ exclude = [
     "venv",
     ".ve",
     "featureflags_client/tests",
-    "featureflags_protobuf",
-    "examples",
+]
+
+[[tool.mypy.overrides]]
+module = "featureflags_protobuf.*"
+follow_imports = "skip"
+disallow_untyped_decorators = false
+disable_error_code = [
+    "no-untyped-def",
+    "attr-defined",
 ]

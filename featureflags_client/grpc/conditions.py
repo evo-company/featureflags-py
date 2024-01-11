@@ -7,7 +7,7 @@ from featureflags_protobuf.graph_pb2 import Result as ResultProto
 _undefined = object()
 
 
-def false(ctx: Dict[str, Any]):
+def false(ctx: Dict[str, Any]) -> bool:
     return False
 
 
@@ -213,7 +213,7 @@ def flag_proc(
 
     else:
 
-        def proc(_: Dict[str, Any]) -> bool:
+        def proc(ctx: Dict[str, Any]) -> bool:
             return flag.enabled.value
 
     return proc

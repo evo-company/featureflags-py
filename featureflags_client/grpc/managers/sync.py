@@ -47,7 +47,7 @@ class SyncManager(AbstractManager):
     _exchange_timeout = 5
 
     def __init__(
-        self, project: str, variables: list[Variable], channel: grpc.Channel
+        self, project: str, variables: List[Variable], channel: grpc.Channel
     ) -> None:
         self._state = GrpcState(project, variables)
         self._channel = channel
