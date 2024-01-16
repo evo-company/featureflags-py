@@ -43,7 +43,7 @@ class AiohttpManager(AsyncBaseManager):
         )
         self._session = aiohttp.ClientSession(base_url=url)
 
-    async def close_client(self) -> None:
+    async def close(self) -> None:
         await self._session.close()
 
     async def _post(  # type: ignore

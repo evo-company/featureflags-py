@@ -170,7 +170,7 @@ class AsyncBaseManager(BaseManager):
         pass
 
     @abstractmethod
-    async def close_client(self) -> None:
+    async def close(self) -> None:
         pass
 
     def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
@@ -246,7 +246,7 @@ class AsyncBaseManager(BaseManager):
                 if error is not None:
                     log.error("Flags refresh task exited with error: %r", error)
 
-        await self.close_client()
+        await self.close()
 
     async def _refresh_loop(self) -> None:
         log.info("Flags refresh task started")

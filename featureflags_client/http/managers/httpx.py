@@ -43,7 +43,7 @@ class HttpxManager(AsyncBaseManager):
         )
         self._session = httpx.AsyncClient(base_url=url)
 
-    async def close_client(self) -> None:
+    async def close(self) -> None:
         await self._session.aclose()
 
     async def _post(  # type: ignore
