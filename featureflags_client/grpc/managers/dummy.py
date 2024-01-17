@@ -23,6 +23,13 @@ class DummyManager(AbstractManager):
 
     """
 
+    def preload(
+        self,
+        timeout: Optional[int] = None,
+        defaults: Optional[Dict] = None,
+    ) -> None:
+        pass
+
     def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         return None
 

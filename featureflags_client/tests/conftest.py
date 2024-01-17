@@ -8,6 +8,9 @@ class SimpleManager(AbstractManager):
     def __init__(self):
         self.checks = {}
 
+    def preload(self, timeout=None, defaults=None) -> None:
+        pass
+
     def load(self, result):
         self.checks = load_flags(result)
 
@@ -19,10 +22,5 @@ class SimpleManager(AbstractManager):
 
 
 @pytest.fixture()
-def loop(event_loop):
-    return event_loop
-
-
-@pytest.fixture()
-def manager():
+def simple_manager():
     return SimpleManager()

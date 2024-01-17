@@ -65,12 +65,10 @@ def fixture_result(variable, flag, condition, check):
 
 
 @pytest.mark.asyncio
-async def test(loop, result, flag, variable, check):
+async def test(result, flag, variable, check):
     result.Flag[flag.id].name = "TEST"
     variables = [Variable(variable.name, Types.STRING)]
-    manager = AsyncIOManager(
-        "aginst", variables, Channel(port=-1, loop=loop), loop=loop
-    )
+    manager = AsyncIOManager("aginst", variables, Channel(port=-1))
 
     async def reply():
         return service_pb2.ExchangeReply(version=1, result=result)
