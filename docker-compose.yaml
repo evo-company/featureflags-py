@@ -15,8 +15,9 @@ services:
       - ./featureflags_client:/app/featureflags_client
       - ./examples:/app/examples
       - ./.ptpython:/app/.ptpython
+      - ./README.md:/app/README.md
       # Uncomment to mount local build of `featureflags_protobuf`
-      - ./featureflags_protobuf:/app/featureflags_protobuf
+      #- ./featureflags_protobuf:/app/featureflags_protobuf
 
   ishell:
     <<: *base
