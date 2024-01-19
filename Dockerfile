@@ -10,6 +10,11 @@ WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./pdm.lock .
 
+# for pyproject.toml to extract version
+COPY ./featureflags_client/__init__.py ./featureflags_client/__init__.py
+# for pyproject.toml to read readme
+COPY ./README.md .
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       libpq-dev \

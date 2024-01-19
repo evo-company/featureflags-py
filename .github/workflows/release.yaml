@@ -1,26 +1,25 @@
 name: Build & publish
 
-# TODO: Setup release workflow
 on:
   push:
-    branches: [ "**" ]
     tags:
     - "v*"
-#  pull_request:
-#    branches: [main]
 
 jobs:
-  deploy-client:
+  deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/client-')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     strategy:
       matrix:
         python-version: [3.7]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python with PDM ${{ matrix.python-version }}
       uses: pdm-project/setup-pdm@v3
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Upload package to pypi.org
-      run: pdm publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
+      run: pdm publish -u "__token__" -P ${{ secrets.PYPI_TOKEN }}

@@ -2,9 +2,8 @@ from collections import OrderedDict, defaultdict
 from datetime import datetime, timedelta
 from typing import DefaultDict, Dict, List
 
-from google.protobuf.timestamp_pb2 import Timestamp as TimestampProto
-
 from featureflags_protobuf.service_pb2 import FlagUsage as FlagUsageProto
+from google.protobuf.timestamp_pb2 import Timestamp as TimestampProto
 
 
 class StatsCollector:

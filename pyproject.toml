@@ -1,7 +1,8 @@
 [project]
 name = "evo-featureflags-client"
-version = "0.4.0"
+dynamic = ["version"]
 description = "Feature flags client"
+readme = "README.md"
 authors = [
     { name = "d.zakharchuk", email = "d.zakharchuk@smartweb.com.ua" },
     { name = "m.kindritskiy", email = "m.kindritskiy@smartweb.com.ua" },
@@ -27,7 +28,12 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 
+[tool.pdm.version]
+source = "file"
+path = "featureflags_client/__init__.py"
+
 [tool.pdm.scripts]
+release = "./scripts/release.sh"
 ishell = "ptpython --asyncio --dark-bg --history-file=.ptpython {args}"
 test = "python -m pytest {args}"
 docs = "sphinx-build -a -b html docs public"

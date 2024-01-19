@@ -11,13 +11,19 @@ Client supports Python >=3.9.
 Installation
 ------------
 
-TODO:
+To install package:
 
+- ``pdm add evo-featureflags-protobuf``
+
+To release package:
+
+- ``VERSION=<tag> MESSAGE=<message> pdm run release"``
 
 Development
 -----------
 
 Install dependencies:
+
 - ``pdm install -d``
 
 Pre-commit
@@ -26,8 +32,8 @@ Pre-commit
 
 ``./scripts/disable-hooks.sh``
 
-
 TODO:
+
 - add docs, automate docs build
 - add tests
 - add `tracer` / `stats_collector` for http manager
