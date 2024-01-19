@@ -6,7 +6,7 @@ from featureflags_client.http.types import Check, Flag, Operator
 _UNDEFINED = object()
 
 
-def false(_ctx: Dict[str, Any]):
+def false(_ctx: Dict[str, Any]) -> bool:
     return False
 
 
@@ -173,7 +173,7 @@ def flag_proc(flag: Flag) -> Optional[Callable]:
 
     else:
 
-        def proc(_: Dict[str, Any]) -> bool:
+        def proc(ctx: Dict[str, Any]) -> bool:
             return flag.enabled
 
     return proc

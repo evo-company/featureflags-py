@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class Endpoints(Enum):
-    PRELOAD = "/flags/preload"
+    PRELOAD = "/flags/load"
     SYNC = "/flags/sync"

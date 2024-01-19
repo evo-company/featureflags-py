@@ -5,9 +5,10 @@ import pytest
 from google.protobuf import wrappers_pb2
 from grpclib.client import Channel
 
-from featureflags_client.grpc.flags import Client, Types, Variable
+from featureflags_client.grpc.client import FeatureFlagsClient
 from featureflags_client.grpc.managers.asyncio import AsyncIOManager
 from featureflags_client.grpc.state import get_grpc_graph_query
+from featureflags_client.grpc.types import Types, Variable
 from featureflags_protobuf import graph_pb2, service_pb2
 
 f = faker.Faker()
@@ -64,12 +65,10 @@ def fixture_result(variable, flag, condition, check):
 
 
 @pytest.mark.asyncio
-async def test(loop, result, flag, variable, check):
+async def test(result, flag, variable, check):
     result.Flag[flag.id].name = "TEST"
     variables = [Variable(variable.name, Types.STRING)]
-    manager = AsyncIOManager(
-        "aginst", variables, Channel(port=-1, loop=loop), loop=loop
-    )
+    manager = AsyncIOManager("aginst", variables, Channel(port=-1))
 
     async def reply():
         return service_pb2.ExchangeReply(version=1, result=result)
@@ -90,7 +89,7 @@ async def test(loop, result, flag, variable, check):
             timeout=None,
         )
 
-    client = Client(Defaults, manager)
+    client = FeatureFlagsClient(Defaults, manager)
     with client.flags({variable.name: check.value_string}) as flags:
         assert flags.TEST is True
     with client.flags({variable.name: f.pystr()}) as flags:

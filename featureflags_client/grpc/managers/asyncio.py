@@ -86,7 +86,7 @@ class AsyncIOManager(AbstractManager):
                 stacklevel=2,
             )
 
-    async def preload(
+    async def preload(  # type: ignore
         self,
         *,
         timeout: Optional[int] = None,
@@ -163,7 +163,7 @@ class AsyncIOManager(AbstractManager):
         log.debug("Exchange reply: %r", reply)
         self._state.apply_reply(reply)
 
-    def get(self, name: str) -> Callable[[Dict], bool] | None:
+    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         return self._state.get(name)
 
     def add_trace(self, tracer: Tracer) -> None:

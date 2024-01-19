@@ -47,7 +47,7 @@ class Flags:
 
     def __history__(self) -> List[Tuple[str, bool]]:
         """Returns an ordered history for flags that were checked"""
-        return list(self._tracer.values.items())
+        return list(self._tracer.values.items())  # type: ignore
 
     def add_trace(self) -> None:
         self._manager.add_trace(self._tracer)

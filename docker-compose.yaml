@@ -9,17 +9,19 @@ services:
       LC_ALL: C.UTF-8
       PYTHONIOENCODING: UTF-8
       PYTHONUNBUFFERED: 1
+    networks:
+      - main
     volumes:
       - ./featureflags_client:/app/featureflags_client
       - ./examples:/app/examples
-      - ./.ipython:/app/.ipython
+      - ./.ptpython:/app/.ptpython
       # Uncomment to mount local build of `featureflags_protobuf`
       - ./featureflags_protobuf:/app/featureflags_protobuf
 
   ishell:
     <<: *base
     image: featureflags-client-examples
-    command: pdm run ipython --ipython-dir=/app/.ipython
+    command: pdm run ishell
 
   test:
     <<: *base
@@ -30,3 +32,7 @@ services:
     <<: *base
     image: featureflags-client-docs
     command: sphinx-build -a -b html docs public
+
+networks:
+  main:
+    driver: bridge

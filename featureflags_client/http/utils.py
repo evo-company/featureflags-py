@@ -13,7 +13,7 @@ def custom_asdict_factory(data: Any) -> Dict:
 
 
 def coerce_defaults(
-    defaults: Union[EnumMeta, Type, Mapping[str, bool]],
+    defaults: Union[EnumMeta, Type, Dict[str, bool]],
 ) -> Dict[str, bool]:
     if isinstance(defaults, EnumMeta):  # deprecated
         defaults = {k: v.value for k, v in defaults.__members__.items()}

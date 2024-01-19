@@ -2,7 +2,7 @@ import inspect
 from collections.abc import Mapping
 from contextlib import contextmanager
 from enum import EnumMeta
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Generator, Optional, Union
 
 from featureflags_client.grpc.flags import Flags
 from featureflags_client.grpc.managers.base import AbstractManager
@@ -18,11 +18,13 @@ class FeatureFlagsClient:
 
     def __init__(
         self,
-        defaults: Union[EnumMeta, type, Mapping[str, bool]],
+        defaults: Union[EnumMeta, type, Dict[str, bool]],
         manager: AbstractManager,
     ) -> None:
         if isinstance(defaults, EnumMeta):  # deprecated
-            defaults = {k: v.value for k, v in defaults.__members__.items()}
+            defaults = {  # type: ignore
+                k: v.value for k, v in defaults.__members__.items()
+            }
         elif inspect.isclass(defaults):
             defaults = {
                 k: getattr(defaults, k)
@@ -51,9 +53,8 @@ class FeatureFlagsClient:
     def flags(
         self,
         ctx: Optional[Dict[str, Any]] = None,
-        *,
         overrides: Optional[Dict[str, bool]] = None,
-    ) -> Flags:
+    ) -> Generator[Flags, None, None]:
         """Context manager to wrap your request handling code and get actual
         flags values
 
@@ -88,4 +89,7 @@ class FeatureFlagsClient:
 
     async def preload_async(self, timeout: Optional[int] = None) -> None:
         """Async version of `preload` method"""
-        await self._manager.preload(timeout=timeout, defaults=self._defaults)
+        await self._manager.preload(  # type: ignore
+            timeout=timeout,
+            defaults=self._defaults,
+        )

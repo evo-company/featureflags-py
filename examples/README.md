@@ -1,11 +1,9 @@
 Examples
 ========
 
-TODO: refactor examples
-
 Here you can find examples for gRPC and HTTP clients with:
 
-- `AIOHTTP`
+- `aiohttp`
 - `Sanic`
 - `Flask`
 - `WSGI`
@@ -13,53 +11,22 @@ Here you can find examples for gRPC and HTTP clients with:
 
 Prerequisites:
 
-.. code-block:: shell
+- sync + grpc:
 
-    $ pip install featureflags-client
+    > pip install featureflags-client[grpclib]
 
-If you're using AsyncIO:
+- async + grpc:
 
-.. code-block:: shell
+  > pip install featureflags-client[grpcio]
 
-    $ pip install grpclib
+- async + http:
 
-else:
+  > pip install featureflags-client[httpx]
 
-.. code-block:: shell
+    or 
 
-    $ pip install grpcio
+  > pip install featureflags-client[aiohttp]
 
-Configuration for all examples located in ``config.py`` module.
+- sync + http:
 
-Feature flags and variables are defined in ``flags.py`` module.
-
-Every example starts a HTTP server and available on http://localhost:5000
-
-AIOHTTP:
-
-.. code-block:: shell
-
-    $ PYTHONPATH=../client:../protobuf python aiohttp_app.py
-
-Sanic:
-
-.. code-block:: shell
-
-    $ PYTHONPATH=../client:../protobuf python sanic_app.py
-
-Flask:
-
-.. code-block:: shell
-
-    $ PYTHONPATH=../client:../protobuf python flask_app.py
-
-WSGI:
-
-.. code-block:: shell
-
-    $ PYTHONPATH=../client:../protobuf python wsgi_app.py
-
-.. _AIOHTTP: https://aiohttp.readthedocs.io/
-.. _Sanic: https://sanic.readthedocs.io/
-.. _Flask: http://flask.pocoo.org
-.. _WSGI: https://www.python.org/dev/peps/pep-0333/
+  > pip install featureflags-client[requests]

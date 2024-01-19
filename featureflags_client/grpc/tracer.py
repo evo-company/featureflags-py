@@ -8,7 +8,7 @@ class Tracer:
     """
 
     def __init__(self) -> None:
-        self.values = OrderedDict()
+        self.values: OrderedDict[str, int] = OrderedDict()
         self.interval = datetime.utcnow().replace(second=0, microsecond=0)
 
     def inc(self, name: str, value: int) -> None:

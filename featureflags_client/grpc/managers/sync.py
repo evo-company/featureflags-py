@@ -47,7 +47,7 @@ class SyncManager(AbstractManager):
     _exchange_timeout = 5
 
     def __init__(
-        self, project: str, variables: list[Variable], channel: grpc.Channel
+        self, project: str, variables: List[Variable], channel: grpc.Channel
     ) -> None:
         self._state = GrpcState(project, variables)
         self._channel = channel
@@ -98,7 +98,7 @@ class SyncManager(AbstractManager):
         log.debug("Exchange reply: %r", reply)
         self._state.apply_reply(reply)
 
-    def get(self, name: str) -> Callable[[Dict], bool] | None:
+    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
         if datetime.utcnow() >= self._next_exchange:
             try:
                 self._exchange(self._exchange_timeout)
