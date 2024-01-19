@@ -1,0 +1,37 @@
+# Ignore Python bytecode files / cache
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache
+.pytest_cache
+.ruff_cache
+__pycache__
+__pypackages__
+featureflags_protobuf
+
+# Ignore Python virtual environment files
+venv/
+.venv/
+.ve/
+.pdm.toml
+.pdm-python
+.pdm-build
+
+# Ignore local development configuration files
+.env
+.lets
+.ipython
+.ptpython
+.python-version
+.secrets
+
+# Ignore IDE settings
+.vscode
+.idea
+
+# Ignore any compiled Python extension modules
+*.so
+
+# Ignore any build artifacts
+build/
+dist/
