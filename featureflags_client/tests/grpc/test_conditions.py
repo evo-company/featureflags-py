@@ -1,5 +1,13 @@
 import faker
 import pytest
+from featureflags_protobuf.graph_pb2 import (
+    Check,
+    Condition,
+    Flag,
+    Ref,
+    Result,
+    Variable,
+)
 from google.protobuf.wrappers_pb2 import BoolValue
 
 from featureflags_client.grpc.conditions import (
@@ -18,14 +26,6 @@ from featureflags_client.grpc.conditions import (
     subset,
     superset,
     wildcard,
-)
-from featureflags_protobuf.graph_pb2 import (
-    Check,
-    Condition,
-    Flag,
-    Ref,
-    Result,
-    Variable,
 )
 
 f = faker.Faker()

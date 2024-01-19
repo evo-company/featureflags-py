@@ -3,14 +3,14 @@ from enum import Enum
 
 import faker
 import pytest
+from featureflags_protobuf.graph_pb2 import Check, Result, Variable
+from featureflags_protobuf.service_pb2 import FlagUsage
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from featureflags_client.grpc.client import FeatureFlagsClient
 from featureflags_client.grpc.flags import Flags
 from featureflags_client.grpc.managers.dummy import DummyManager
 from featureflags_client.grpc.stats_collector import StatsCollector
-from featureflags_protobuf.graph_pb2 import Check, Result, Variable
-from featureflags_protobuf.service_pb2 import FlagUsage
 
 f = faker.Faker()
 
