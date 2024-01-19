@@ -94,3 +94,18 @@ commands:
     cmd: |
       docker-compose run -T --rm featureflags-client \
         pdm run fmt
+
+  release:
+    description: |
+      Update version in featureflags_client/__init__.py
+      Create new annotated tag
+      Push changes to remote
+    options: |
+      Usage: lets release <version> --message=<message>
+      Options:
+        <version>       Set version
+        --message=<message>, -m    Release message
+      Example:
+        lets release 0.4.0 --message="Added feature"
+    cmd: |
+      VERSION=${LETSOPT_VERSION} MESSAGE=${LETSOPT_MESSAGE} pdm run release
