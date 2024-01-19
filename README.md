@@ -17,7 +17,7 @@ To install package:
 
 To release package:
 
-- ``VERSION=<tag> MESSAGE=<message> pdm run release"``
+- ``lets release 0.4.0 --message="Added feature"``
 
 Development
 -----------
@@ -38,4 +38,3 @@ TODO:
 - add tests
 - add `tracer` / `stats_collector` for http manager
 - rm old grpc client
-- add publish workflow 
