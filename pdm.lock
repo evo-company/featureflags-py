@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default", "dev", "docs", "examples", "lint", "test", "aiohttp", "requests", "ptpython"]
+groups = ["default", "dev", "docs", "examples", "lint", "test", "aiohttp", "requests"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
 content_hash = "sha256:c7bbb6cf01030ad7838b479d4786a3836b5c8e5e1c146cfcd53743604cbc0a0b"
