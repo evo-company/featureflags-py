@@ -19,6 +19,8 @@ def get_ff_client():
             project=config.FF_PROJECT,
             variables=[flags.REQUEST_QUERY],
             defaults=flags.Defaults,
+            request_timeout=5,
+            refresh_interval=10,
         )
         ff_client = g._ff_client = FeatureFlagsClient(manager)
     return ff_client

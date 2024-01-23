@@ -13,7 +13,7 @@ Installation
 
 To install package:
 
-- ``pdm add evo-featureflags-protobuf``
+- ``pdm add evo-featureflags-client``
 
 To release package:
 

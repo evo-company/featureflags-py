@@ -16,11 +16,13 @@ async def on_start(app):
         project=config.FF_PROJECT,
         variables=[flags.REQUEST_QUERY],
         defaults=flags.Defaults,
+        request_timeout=5,
+        refresh_interval=10,
     )
     app["ff_client"] = FeatureFlagsClient(app["ff_manager"])
 
     try:
-        await app["ff_client"].preload_async(timeout=5)
+        await app["ff_client"].preload_async()
     except Exception:
         log.exception(
             "Unable to preload feature flags, application will "
