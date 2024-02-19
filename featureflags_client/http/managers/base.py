@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from enum import EnumMeta
 from typing import Any, Callable, Dict, List, Optional, Type, Union
 
-from featureflags_client.grpc.utils import intervals_gen
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.state import HttpState
 from featureflags_client.http.types import (
@@ -19,6 +18,7 @@ from featureflags_client.http.types import (
 from featureflags_client.http.utils import (
     coerce_defaults,
     custom_asdict_factory,
+    intervals_gen,
 )
 
 log = logging.getLogger(__name__)

@@ -56,6 +56,9 @@ test = [
     "protobuf<4.0.0",
     "grpcio==1.59.0",
     "hiku==0.7.1",
+    "httpx>=0.24.1",
+    "aiohttp>=3.9.1",
+    "requests>=2.31.0",
 ]
 lint = [
     "black>=23.3.0",

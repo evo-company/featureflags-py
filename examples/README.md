@@ -1,23 +1,13 @@
 Examples
 ========
 
-Here you can find examples for gRPC and HTTP clients with:
+Here you can find examples for HTTP clients with:
 
 - `aiohttp`
-- `Sanic`
-- `Flask`
-- `WSGI`
 - `httpx`
+- `requests`
 
 Prerequisites:
-
-- sync + grpc:
-
-    > pip install featureflags-client[grpclib]
-
-- async + grpc:
-
-  > pip install featureflags-client[grpcio]
 
 - async + http:
 

@@ -1,4 +1,4 @@
-from featureflags_client.grpc.utils import intervals_gen
+from featureflags_client.http.utils import intervals_gen
 
 
 def test_intervals_gen_from_success():

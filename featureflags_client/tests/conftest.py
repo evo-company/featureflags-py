@@ -1,26 +1,42 @@
+import faker
 import pytest
 
-from featureflags_client.grpc.conditions import load_flags
-from featureflags_client.grpc.flags import AbstractManager
+from featureflags_client.http.types import (
+    Check,
+    CheckVariable,
+    Condition,
+    Flag,
+    Operator,
+    VariableType,
+)
+
+f = faker.Faker()
 
 
-class SimpleManager(AbstractManager):
-    def __init__(self):
-        self.checks = {}
-
-    def preload(self, timeout=None, defaults=None) -> None:
-        pass
-
-    def load(self, result):
-        self.checks = load_flags(result)
-
-    def get(self, name):
-        return self.checks.get(name)
-
-    def add_trace(self, tracer):
-        pass
+@pytest.fixture
+def variable():
+    return CheckVariable(name=f.pystr(), type=VariableType.STRING)
 
 
-@pytest.fixture()
-def simple_manager():
-    return SimpleManager()
+@pytest.fixture
+def check(variable):
+    return Check(
+        operator=Operator.EQUAL,
+        variable=variable,
+        value=f.pystr(),
+    )
+
+
+@pytest.fixture
+def condition(check):
+    return Condition(checks=[check])
+
+
+@pytest.fixture
+def flag(condition):
+    return Flag(
+        name=f.pystr(),
+        enabled=True,
+        overridden=True,
+        conditions=[condition],
+    )
