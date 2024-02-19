@@ -1,7 +1,10 @@
+import logging
 import re
 from typing import Any, Callable, Dict, List, Optional, Set
 
 from featureflags_client.http.types import Check, Flag, Operator
+
+log = logging.getLogger(__name__)
 
 _UNDEFINED = object()
 
@@ -140,19 +143,17 @@ OPERATIONS_MAP: Dict[Operator, Callable[..., Callable[..., bool]]] = {
 
 
 def check_proc(check: Check) -> Callable:
-    operator = check.operator
-    value = check.value
-    variable = check.variable
-
-    if variable is None or operator is None or value is None:
+    if check.value is None:
+        log.info(f"Check[{check}].value is None")
         return false
 
-    return OPERATIONS_MAP[operator](variable.name, value)
+    return OPERATIONS_MAP[check.operator](check.variable.name, check.value)
 
 
 def flag_proc(flag: Flag) -> Optional[Callable]:
     if not flag.overridden:
         # Flag was not overridden on server, use value from defaults.
+        log.info(f"Flag[{flag.name}] is not overriden yet, using default value")
         return None
 
     conditions = []
@@ -161,7 +162,10 @@ def flag_proc(flag: Flag) -> Optional[Callable]:
 
         # in case of invalid condition it would be safe to replace it
         # with a falsish condition
-        checks_procs = checks_procs or [false]
+        if not checks_procs:
+            log.info("Condition has empty checks")
+            checks_procs = [false]
+
         conditions.append(checks_procs)
 
     if flag.enabled and conditions:
@@ -172,6 +176,7 @@ def flag_proc(flag: Flag) -> Optional[Callable]:
             )
 
     else:
+        log.info(f"Flag[{flag.name}] is disabled or do not have any conditions")
 
         def proc(ctx: Dict[str, Any]) -> bool:
             return flag.enabled

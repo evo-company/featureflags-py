@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Union
+from typing import List, Union
 
 from dataclass_wizard import JSONWizard
 
@@ -34,8 +34,8 @@ class CheckVariable:
 
 @dataclass
 class Check:
-    operator: Optional[Operator] = None
-    variable: Optional[CheckVariable] = None
+    operator: Operator
+    variable: CheckVariable
     value: Union[str, float, List[str], None] = None
 
 

@@ -3,11 +3,10 @@ import logging
 import config
 import flags
 from flask import Flask, g, request
-from grpc import insecure_channel
 from werkzeug.local import LocalProxy
 
-from featureflags_client.grpc.client import FeatureFlagsClient
-from featureflags_client.grpc.managers.sync import SyncManager
+from featureflags_client.http.client import FeatureFlagsClient
+from featureflags_client.http.managers.dummy import DummyManager
 
 app = Flask(__name__)
 
@@ -15,9 +14,16 @@ app = Flask(__name__)
 def get_ff_client():
     ff_client = getattr(g, "_ff_client", None)
     if ff_client is None:
-        channel = insecure_channel(f"{config.FF_HOST}:{config.FF_PORT}")
-        manager = SyncManager(config.FF_PROJECT, [flags.REQUEST_QUERY], channel)
-        ff_client = g._ff_client = FeatureFlagsClient(flags.Defaults, manager)
+        # Dummy manager just uses Defaults values for flags, mainly for tests.
+        manager = DummyManager(
+            url=config.FF_URL,
+            project=config.FF_PROJECT,
+            variables=[flags.REQUEST_QUERY],
+            defaults=flags.Defaults,
+            request_timeout=5,
+            refresh_interval=10,
+        )
+        ff_client = g._ff_client = FeatureFlagsClient(manager)
     return ff_client
 
 
