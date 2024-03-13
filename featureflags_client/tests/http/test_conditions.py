@@ -98,6 +98,9 @@ def test_percent():
 
     assert check_op(_UNDEFINED, percent, 100) is False
 
+    assert check_op("foo", percent, '100') is True
+    assert check_op("foo", percent, 'not_number') is False
+
 
 def test_regexp():
     assert check_op("anything", regexp, ".") is True

@@ -17,7 +17,7 @@ def except_false(func: Callable) -> Callable:
     def wrapper(ctx: Dict[str, Any]) -> Any:
         try:
             return func(ctx)
-        except TypeError:
+        except (TypeError, ValueError):
             return False
 
     return wrapper
