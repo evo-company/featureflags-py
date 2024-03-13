@@ -17,7 +17,7 @@ def except_false(func: Callable) -> Callable:
     def wrapper(ctx: Dict[str, Any]) -> Any:
         try:
             return func(ctx)
-        except TypeError:
+        except (TypeError, ValueError):
             return False
 
     return wrapper
@@ -79,7 +79,7 @@ def percent(name: str, value: Any) -> Callable:
     @except_false
     def proc(ctx: Dict[str, Any]) -> bool:
         ctx_val = ctx.get(name, _UNDEFINED)
-        return ctx_val is not _UNDEFINED and hash(ctx_val) % 100 < value
+        return ctx_val is not _UNDEFINED and hash(ctx_val) % 100 < int(value)
 
     return proc
 
