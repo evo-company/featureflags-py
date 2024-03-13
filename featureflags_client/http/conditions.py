@@ -79,7 +79,7 @@ def percent(name: str, value: Any) -> Callable:
     @except_false
     def proc(ctx: Dict[str, Any]) -> bool:
         ctx_val = ctx.get(name, _UNDEFINED)
-        return ctx_val is not _UNDEFINED and hash(ctx_val) % 100 < value
+        return ctx_val is not _UNDEFINED and hash(ctx_val) % 100 < int(value)
 
     return proc
 
