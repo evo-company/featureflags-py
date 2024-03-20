@@ -1,4 +1,6 @@
+import hashlib
 import inspect
+import struct
 from enum import Enum, EnumMeta
 from typing import Any, Dict, Generator, Mapping, Type, Union
 
@@ -54,3 +56,9 @@ def intervals_gen(
         else:
             success = yield retry_interval
             retry_interval = min(retry_interval * 2, retry_interval_max)
+
+
+def hash_flag_value(name: str, value: Any) -> int:
+    hash_digest = hashlib.md5(f"{name}{value}".encode()).digest()  # noqa: S324
+    (hash_int,) = struct.unpack("<L", hash_digest[-4:])
+    return hash_int

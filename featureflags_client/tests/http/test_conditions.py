@@ -19,10 +19,15 @@ from featureflags_client.http.conditions import (
     wildcard,
 )
 from featureflags_client.http.types import Operator
+from featureflags_client.http.utils import hash_flag_value
+
+TEST_OPERATOR_NAME = "test_operator"
+TEST_VARIABLE_NAME = "test_operator"
 
 
 def check_op(left: Any, op: Callable, right: Any) -> bool:
-    return op("var", right)({"var": left} if left is not _UNDEFINED else {})
+    context = {TEST_VARIABLE_NAME: left} if left is not _UNDEFINED else {}
+    return op(TEST_OPERATOR_NAME, right)(context)
 
 
 def test_false():
@@ -82,24 +87,30 @@ def test_contains():
 
 
 def test_percent():
-    assert check_op(0, percent, 1) is True
-    assert check_op(1, percent, 1) is False
-    assert check_op(1, percent, 2) is True
-
+    # If percent <= 0 return False
     for i in range(-150, 150):
         assert check_op(i, percent, 0) is False
+
+    # If percent >= 100 return True
     for i in range(-150, 150):
         assert check_op(i, percent, 100) is True
 
+    # Check not integer values
+    assert check_op(_UNDEFINED, percent, 100) is False
+    assert check_op(50, percent, _UNDEFINED) is False
+    assert check_op(_UNDEFINED, percent, _UNDEFINED) is False
+    assert check_op("foo", percent, "not_number") is False
+
+    # Check string values
+    assert check_op("foo", percent, "100") is True
+    assert check_op("foo", percent, "0") is False
     assert check_op("foo", percent, 100) is True
     assert check_op("foo", percent, 0) is False
-    assert check_op("foo", percent, hash("foo") % 100 + 1) is True
-    assert check_op("foo", percent, hash("foo") % 100 - 1) is False
 
-    assert check_op(_UNDEFINED, percent, 100) is False
-
-    assert check_op("foo", percent, "100") is True
-    assert check_op("foo", percent, "not_number") is False
+    # Check hash comparison
+    foo_hash = hash_flag_value(TEST_VARIABLE_NAME, "foo")
+    assert check_op("foo", percent, foo_hash % 100 + 1) is True
+    assert check_op("foo", percent, foo_hash % 100 - 1) is False
 
 
 def test_regexp():
