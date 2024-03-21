@@ -3,6 +3,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Set
 
 from featureflags_client.http.types import Check, Flag, Operator
+from featureflags_client.http.utils import hash_flag_value
 
 log = logging.getLogger(__name__)
 
@@ -79,7 +80,11 @@ def percent(name: str, value: Any) -> Callable:
     @except_false
     def proc(ctx: Dict[str, Any]) -> bool:
         ctx_val = ctx.get(name, _UNDEFINED)
-        return ctx_val is not _UNDEFINED and hash(ctx_val) % 100 < int(value)
+        if ctx_val is _UNDEFINED:
+            return False
+
+        hash_ctx_val = hash_flag_value(name, ctx_val)
+        return hash_ctx_val % 100 < int(value)
 
     return proc
 
