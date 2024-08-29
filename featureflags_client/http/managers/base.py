@@ -17,11 +17,27 @@ from featureflags_client.http.types import (
 )
 from featureflags_client.http.utils import (
     coerce_defaults,
+    coerce_values_defaults,
     custom_asdict_factory,
     intervals_gen,
 )
 
 log = logging.getLogger(__name__)
+
+
+def _values_defaults_to_tuple(
+    values: list[str], values_defaults: dict[str, int | str]
+) -> list[tuple[str, str | int]]:
+    result = []
+    for value in values:
+        value_default = values_defaults.get(value, "")
+        result.append(
+            (
+                value,
+                value_default,
+            )
+        )
+    return result
 
 
 class BaseManager(ABC):
@@ -35,17 +51,24 @@ class BaseManager(ABC):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
         request_timeout: int = 5,
         refresh_interval: int = 60,  # 1 minute.
     ) -> None:
         self.url = url
         self.defaults = coerce_defaults(defaults)
 
+        if values_defaults is None:
+            values_defaults = {}
+
+        self.values_defaults = coerce_values_defaults(values_defaults)
+
         self._request_timeout = request_timeout
         self._state = HttpState(
             project=project,
             variables=variables,
             flags=list(self.defaults.keys()),
+            values=list(self.values_defaults.keys()),
         )
 
         self._int_gen = intervals_gen(interval=refresh_interval)
@@ -84,7 +107,9 @@ class BaseManager(ABC):
                     self._next_sync,
                 )
 
-    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
+    def get(
+        self, name: str
+    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
         self._check_sync()
         return self._state.get(name)
 
@@ -93,13 +118,18 @@ class BaseManager(ABC):
             project=self._state.project,
             variables=self._state.variables,
             flags=self._state.flags,
+            values=_values_defaults_to_tuple(
+                self._state.values,
+                self.values_defaults,
+            ),
             version=self._state.version,
         )
         log.debug(
-            "Exchange request, project: %s, version: %s, flags: %s",
+            "Exchange request, project: %s, version: %s, flags: %s, values: %s",
             payload.project,
             payload.version,
             payload.flags,
+            payload.values,
         )
 
         response_raw = self._post(
@@ -110,19 +140,21 @@ class BaseManager(ABC):
         log.debug("Preload response: %s", response_raw)
 
         response = PreloadFlagsResponse.from_dict(response_raw)
-        self._state.update(response.flags, response.version)
+        self._state.update(response.flags, response.values, response.version)
 
     def sync(self) -> None:
         payload = SyncFlagsRequest(
             project=self._state.project,
             flags=self._state.flags,
+            values=self._state.values,
             version=self._state.version,
         )
         log.debug(
-            "Sync request, project: %s, version: %s, flags: %s",
+            "Sync request, project: %s, version: %s, flags: %s, values: %s",
             payload.project,
             payload.version,
             payload.flags,
+            payload.values,
         )
 
         response_raw = self._post(
@@ -133,7 +165,7 @@ class BaseManager(ABC):
         log.debug("Sync reply: %s", response_raw)
 
         response = SyncFlagsResponse.from_dict(response_raw)
-        self._state.update(response.flags, response.version)
+        self._state.update(response.flags, response.values, response.version)
 
 
 class AsyncBaseManager(BaseManager):
@@ -147,6 +179,7 @@ class AsyncBaseManager(BaseManager):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:
@@ -155,6 +188,7 @@ class AsyncBaseManager(BaseManager):
             project,
             variables,
             defaults,
+            values_defaults,
             request_timeout,
             refresh_interval,
         )
@@ -173,25 +207,32 @@ class AsyncBaseManager(BaseManager):
     async def close(self) -> None:
         pass
 
-    def get(self, name: str) -> Optional[Callable[[Dict], bool]]:
+    def get(
+        self, name: str
+    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
         return self._state.get(name)
 
     async def preload(self) -> None:  # type: ignore
         """
-        Preload flags from the server.
+        Preload flags and values from the server.
         """
 
         payload = PreloadFlagsRequest(
             project=self._state.project,
             variables=self._state.variables,
             flags=self._state.flags,
+            values=_values_defaults_to_tuple(
+                self._state.values,
+                self.values_defaults,
+            ),
             version=self._state.version,
         )
         log.debug(
-            "Exchange request, project: %s, version: %s, flags: %s",
+            "Exchange request, project: %s, version: %s, flags: %s, values: %s",
             payload.project,
             payload.version,
             payload.flags,
+            payload.values,
         )
 
         response_raw = await self._post(
@@ -202,19 +243,21 @@ class AsyncBaseManager(BaseManager):
         log.debug("Preload response: %s", response_raw)
 
         response = PreloadFlagsResponse.from_dict(response_raw)
-        self._state.update(response.flags, response.version)
+        self._state.update(response.flags, response.values, response.version)
 
     async def sync(self) -> None:  # type: ignore
         payload = SyncFlagsRequest(
             project=self._state.project,
             flags=self._state.flags,
+            values=self._state.values,
             version=self._state.version,
         )
         log.debug(
-            "Sync request, project: %s, version: %s, flags: %s",
+            "Sync request, project: %s, version: %s, flags: %s, values: %s",
             payload.project,
             payload.version,
             payload.flags,
+            payload.values,
         )
 
         response_raw = await self._post(
@@ -225,7 +268,7 @@ class AsyncBaseManager(BaseManager):
         log.debug("Sync reply: %s", response_raw)
 
         response = SyncFlagsResponse.from_dict(response_raw)
-        self._state.update(response.flags, response.version)
+        self._state.update(response.flags, response.values, response.version)
 
     def start(self) -> None:
         if self._refresh_task is not None:

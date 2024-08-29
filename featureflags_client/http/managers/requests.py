@@ -24,7 +24,7 @@ log = logging.getLogger(__name__)
 
 
 class RequestsManager(BaseManager):
-    """Feature flags manager for sync apps with `requests` client."""
+    """Feature flags and values manager for sync apps with `requests` client."""
 
     def __init__(  # noqa: PLR0913
         self,
@@ -32,6 +32,7 @@ class RequestsManager(BaseManager):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:
@@ -40,6 +41,7 @@ class RequestsManager(BaseManager):
             project,
             variables,
             defaults,
+            values_defaults,
             request_timeout,
             refresh_interval,
         )

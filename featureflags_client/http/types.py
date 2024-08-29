@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Union
+from typing import List, Tuple, Union
 
 from dataclass_wizard import JSONWizard
 
@@ -45,6 +45,12 @@ class Condition:
 
 
 @dataclass
+class ValueCondition:
+    checks: List[Check]
+    value_override: Union[int, str]
+
+
+@dataclass
 class Flag:
     name: str
     enabled: bool
@@ -53,9 +59,20 @@ class Flag:
 
 
 @dataclass
+class Value:
+    name: str
+    enabled: bool
+    overridden: bool
+    value_default: Union[int, str]
+    value_override: Union[int, str]
+    conditions: List[ValueCondition]
+
+
+@dataclass
 class RequestData:
     project_name: str
     flags: List[Flag]
+    values: List[Value]
 
 
 @dataclass
@@ -70,12 +87,14 @@ class PreloadFlagsRequest:
     version: int
     variables: List[Variable] = field(default_factory=list)
     flags: List[str] = field(default_factory=list)
+    values: List[Tuple[str, Union[str, int]]] = field(default_factory=list)
 
 
 @dataclass
 class PreloadFlagsResponse(JSONWizard):
     version: int
     flags: List[Flag] = field(default_factory=list)
+    values: List[Value] = field(default_factory=list)
 
 
 @dataclass
@@ -83,9 +102,11 @@ class SyncFlagsRequest:
     project: str
     version: int
     flags: List[str] = field(default_factory=list)
+    values: List[str] = field(default_factory=list)
 
 
 @dataclass
 class SyncFlagsResponse(JSONWizard):
     version: int
     flags: List[Flag] = field(default_factory=list)
+    values: List[Value] = field(default_factory=list)

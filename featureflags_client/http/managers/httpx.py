@@ -30,6 +30,7 @@ class HttpxManager(AsyncBaseManager):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:
@@ -38,6 +39,7 @@ class HttpxManager(AsyncBaseManager):
             project,
             variables,
             defaults,
+            values_defaults,
             request_timeout,
             refresh_interval,
         )

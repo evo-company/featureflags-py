@@ -16,6 +16,7 @@ from featureflags_client.http.conditions import (
     regexp,
     subset,
     superset,
+    value_proc,
     wildcard,
 )
 from featureflags_client.http.types import Operator
@@ -166,3 +167,18 @@ def test_check_proc_no_value(check):
 def test_valid_flag_proc(flag, check, variable):
     proc = flag_proc(flag)
     assert proc({variable.name: check.value}) is True
+
+
+def test_valid_str_value_proc(value, check, variable):
+    proc = value_proc(value)
+    assert (
+        proc({variable.name: check.value}) is value.conditions[0].value_override
+    )
+
+
+def test_valid_int_value_proc(value_int, check, variable):
+    proc = value_proc(value_int)
+    assert (
+        proc({variable.name: check.value})
+        is value_int.conditions[0].value_override
+    )
