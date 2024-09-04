@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from enum import EnumMeta
-from typing import Any, Callable, Dict, List, Optional, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.state import HttpState
@@ -26,8 +26,8 @@ log = logging.getLogger(__name__)
 
 
 def _values_defaults_to_tuple(
-    values: list[str], values_defaults: dict[str, int | str]
-) -> list[tuple[str, str | int]]:
+    values: List[str], values_defaults: Dict[str, Union[int, str]]
+) -> List[Tuple[str, Union[int, str]]]:
     result = []
     for value in values:
         value_default = values_defaults.get(value, "")
@@ -51,7 +51,9 @@ class BaseManager(ABC):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
-        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
+        values_defaults: Optional[
+            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+        ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 60,  # 1 minute.
     ) -> None:
@@ -179,7 +181,9 @@ class AsyncBaseManager(BaseManager):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
-        values_defaults: EnumMeta | Type | dict[str, int | str] | None = None,
+        values_defaults: Optional[
+            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+        ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:

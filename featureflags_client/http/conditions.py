@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Any, Callable, Dict, List, Optional, Set
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 from featureflags_client.http.types import Check, Flag, Operator, Value
 from featureflags_client.http.utils import hash_flag_value
@@ -208,14 +208,14 @@ def update_flags_state(flags: List[Flag]) -> Dict[str, Callable[..., bool]]:
     return procs
 
 
-def str_to_int(value: int | str) -> int | str:
+def str_to_int(value: Union[int, str]) -> Union[int, str]:
     try:
         return int(value)
     except ValueError:
         return value
 
 
-def value_proc(value: Value) -> Callable | int | str:
+def value_proc(value: Value) -> Union[Callable, int, str]:
     if not value.overridden:
         # Value was not overridden on server, use value from defaults.
         log.debug(
@@ -239,7 +239,7 @@ def value_proc(value: Value) -> Callable | int | str:
 
     if value.enabled and conditions:
 
-        def proc(ctx: Dict[str, Any]) -> int | str:
+        def proc(ctx: Dict[str, Any]) -> Union[int, str]:
             for condition_value_override, checks in conditions:
                 if all(check(ctx) for check in checks):
                     return str_to_int(condition_value_override)
@@ -250,7 +250,7 @@ def value_proc(value: Value) -> Callable | int | str:
             f"Value[{value.name}] is disabled or do not have any conditions"
         )
 
-        def proc(ctx: Dict[str, Any]) -> int | str:
+        def proc(ctx: Dict[str, Any]) -> Union[int, str]:
             return str_to_int(value.value_override)
 
     return proc
@@ -258,7 +258,7 @@ def value_proc(value: Value) -> Callable | int | str:
 
 def update_values_state(
     values: List[Value],
-) -> dict[str, Callable[..., int | str]]:
+) -> Dict[str, Callable[..., Union[int, str]]]:
     """
     Assign a proc to each values which has to be computed.
     """

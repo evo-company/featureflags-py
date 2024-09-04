@@ -58,8 +58,7 @@ def coerce_values_defaults(
     invalid = [
         k
         for k, v in defaults.items()
-        if not isinstance(k, str)
-        or not (isinstance(v, (int, str)))
+        if not isinstance(k, str) or not (isinstance(v, (int, str)))
     ]
     if invalid:
         raise TypeError(
