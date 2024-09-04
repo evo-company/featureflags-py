@@ -1,32 +1,32 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 from featureflags_client.http.managers.base import BaseManager
 
 
-class Flags:
+class Values:
     """
-    Flags object to access current flags state.
+    Values object to access current feature values state.
     """
 
     def __init__(
         self,
         manager: BaseManager,
         ctx: Optional[Dict[str, Any]] = None,
-        overrides: Optional[Dict[str, bool]] = None,
+        overrides: Optional[Dict[str, Union[int, str]]] = None,
     ) -> None:
         self._manager = manager
-        self._defaults = manager.defaults
+        self._defaults = manager.values_defaults
         self._ctx = ctx or {}
         self._overrides = overrides or {}
 
-    def __getattr__(self, name: str) -> bool:
+    def __getattr__(self, name: str) -> Union[int, str]:
         default = self._defaults.get(name)
         if default is None:
-            raise AttributeError(f"Flag is not defined: {name}")
+            raise AttributeError(f"Feature value is not defined: {name}")
 
         value = self._overrides.get(name)
         if value is None:
-            check = self._manager.get_flag(name)
+            check = self._manager.get_value(name)
             value = check(self._ctx) if check is not None else default
 
         # caching/snapshotting

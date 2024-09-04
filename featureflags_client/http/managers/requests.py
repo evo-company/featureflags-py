@@ -1,6 +1,6 @@
 import logging
 from enum import EnumMeta
-from typing import Any, Dict, List, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.managers.base import (
@@ -24,7 +24,7 @@ log = logging.getLogger(__name__)
 
 
 class RequestsManager(BaseManager):
-    """Feature flags manager for sync apps with `requests` client."""
+    """Feature flags and values manager for sync apps with `requests` client."""
 
     def __init__(  # noqa: PLR0913
         self,
@@ -32,6 +32,9 @@ class RequestsManager(BaseManager):
         project: str,
         variables: List[Variable],
         defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        values_defaults: Optional[
+            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+        ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
     ) -> None:
@@ -40,6 +43,7 @@ class RequestsManager(BaseManager):
             project,
             variables,
             defaults,
+            values_defaults,
             request_timeout,
             refresh_interval,
         )

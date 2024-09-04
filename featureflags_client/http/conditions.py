@@ -1,8 +1,8 @@
 import logging
 import re
-from typing import Any, Callable, Dict, List, Optional, Set
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
-from featureflags_client.http.types import Check, Flag, Operator
+from featureflags_client.http.types import Check, Flag, Operator, Value
 from featureflags_client.http.utils import hash_flag_value
 
 log = logging.getLogger(__name__)
@@ -204,5 +204,70 @@ def update_flags_state(flags: List[Flag]) -> Dict[str, Callable[..., bool]]:
         proc = flag_proc(flag)
         if proc is not None:
             procs[flag.name] = proc
+
+    return procs
+
+
+def str_to_int(value: Union[int, str]) -> Union[int, str]:
+    try:
+        return int(value)
+    except ValueError:
+        return value
+
+
+def value_proc(value: Value) -> Union[Callable, int, str]:
+    if not value.overridden:
+        # Value was not overridden on server, use value from defaults.
+        log.debug(
+            f"Value[{value.name}] is not override yet, using default value"
+        )
+        return str_to_int(value.value_default)
+
+    conditions = []
+    for condition in value.conditions:
+        checks_procs = [check_proc(check) for check in condition.checks]
+
+        # in case of invalid condition it would be safe to replace it
+        # with a falsish condition
+        if not checks_procs:
+            log.debug("Condition has empty checks")
+            checks_procs = [false]
+
+        conditions.append(
+            (condition.value_override, checks_procs),
+        )
+
+    if value.enabled and conditions:
+
+        def proc(ctx: Dict[str, Any]) -> Union[int, str]:
+            for condition_value_override, checks in conditions:
+                if all(check(ctx) for check in checks):
+                    return str_to_int(condition_value_override)
+            return str_to_int(value.value_override)
+
+    else:
+        log.debug(
+            f"Value[{value.name}] is disabled or do not have any conditions"
+        )
+
+        def proc(ctx: Dict[str, Any]) -> Union[int, str]:
+            return str_to_int(value.value_override)
+
+    return proc
+
+
+def update_values_state(
+    values: List[Value],
+) -> Dict[str, Callable[..., Union[int, str]]]:
+    """
+    Assign a proc to each values which has to be computed.
+    """
+
+    procs = {}
+
+    for value in values:
+        proc = value_proc(value)
+        if proc is not None:
+            procs[value.name] = proc
 
     return procs
