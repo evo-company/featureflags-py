@@ -26,7 +26,7 @@ class Values:
 
         value = self._overrides.get(name)
         if value is None:
-            check = self._manager.get(name)
+            check = self._manager.get_value(name)
             value = check(self._ctx) if check is not None else default
 
         # caching/snapshotting

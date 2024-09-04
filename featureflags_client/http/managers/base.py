@@ -109,11 +109,15 @@ class BaseManager(ABC):
                     self._next_sync,
                 )
 
-    def get(
-        self, name: str
-    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
+    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
         self._check_sync()
-        return self._state.get(name)
+        return self._state.get_flag(name)
+
+    def get_value(
+        self, name: str
+    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+        self._check_sync()
+        return self._state.get_value(name)
 
     def preload(self) -> None:
         payload = PreloadFlagsRequest(
@@ -211,10 +215,13 @@ class AsyncBaseManager(BaseManager):
     async def close(self) -> None:
         pass
 
-    def get(
+    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
+        return self._state.get_flag(name)
+
+    def get_value(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
-        return self._state.get(name)
+    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+        return self._state.get_value(name)
 
     async def preload(self) -> None:  # type: ignore
         """

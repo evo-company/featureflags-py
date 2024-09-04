@@ -19,7 +19,8 @@ class BaseState(ABC):
     project: str
     version: int
 
-    _state: Dict[str, Callable[..., Union[bool, int, str]]]
+    _flags_state: Dict[str, Callable[..., bool]]
+    _values_state: Dict[str, Callable[..., Union[int, str]]]
 
     def __init__(
         self,
@@ -34,12 +35,16 @@ class BaseState(ABC):
         self.flags = flags
         self.values = values
 
-        self._state = {}
+        self._flags_state = {}
+        self._values_state = {}
 
-    def get(
+    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
+        return self._flags_state.get(name)
+
+    def get_value(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
-        return self._state.get(name)
+    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+        return self._values_state.get(name)
 
     @abstractmethod
     def update(
@@ -59,7 +64,6 @@ class HttpState(BaseState):
         version: int,
     ) -> None:
         if self.version != version:
-            flags_state = update_flags_state(flags)
-            values_state = update_values_state(values)
-            self._state = {**flags_state, **values_state}
+            self._flags_state = update_flags_state(flags)
+            self._values_state = update_values_state(values)
             self.version = version
