@@ -2,11 +2,12 @@ FeatureFlags client library for Python
 
 See ``examples`` directory for complete examples for some major Web frameworks.
 
+[PyPi](https://pypi.org/project/evo-featureflags-client)
+
 Overview
 --------
 
 Client supports Python >=3.9.
-
 
 Installation
 ------------
