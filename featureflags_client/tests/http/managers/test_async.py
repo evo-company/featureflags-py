@@ -22,7 +22,8 @@ class Defaults:
 
 class ValuesDefaults:
     TEST = "test"
-    TEST_INT = 1
+    TEST_INT_A = 1
+    TEST_INT_B = 20
 
 
 @pytest.mark.asyncio
@@ -85,7 +86,6 @@ async def test_manager(async_manager_class, flag, variable, check, condition):
 )
 async def test_values_manager(
     async_manager_class,
-    value,
     variable,
     check,
     value_condition,
@@ -102,27 +102,37 @@ async def test_values_manager(
     )
     client = FeatureFlagsClient(manager)
 
+    value_test = Value(
+        name="TEST",
+        enabled=True,
+        overridden=True,
+        value_default="test",
+        value_override="nottest",
+        conditions=[value_condition],
+    )
+
+    value_test_int_a = Value(
+        name="TEST_INT_A",
+        enabled=True,
+        overridden=True,
+        value_default=1,
+        value_override=2,
+        conditions=[value_condition_int_value],
+    )
+
+    value_test_int_b = Value(
+        name="TEST_INT_B",
+        enabled=False,
+        overridden=False,
+        value_default=10,
+        value_override=10,
+        conditions=[],
+    )
+
     mock_preload_response = PreloadFlagsResponse(
         version=1,
         flags=[],
-        values=[
-            Value(
-                name="TEST",
-                enabled=True,
-                overridden=True,
-                value_default="test",
-                value_override="nottest",
-                conditions=[value_condition],
-            ),
-            Value(
-                name="TEST_INT",
-                enabled=True,
-                overridden=True,
-                value_default=1,
-                value_override=2,
-                conditions=[value_condition_int_value],
-            ),
-        ],
+        values=[value_test, value_test_int_a, value_test_int_b],
     )
     with patch.object(manager, "_post") as mock_post:
         mock_post.return_value = mock_preload_response.to_dict()
@@ -130,17 +140,23 @@ async def test_values_manager(
         await client.preload_async()
         mock_post.assert_called_once()
 
+    # check that resulting values based on conditions
     with client.values({variable.name: check.value}) as values:
         assert values.TEST is value_condition.value_override
-        assert values.TEST_INT is value_condition_int_value.value_override
+        assert values.TEST_INT_A is value_condition_int_value.value_override
+        assert values.TEST_INT_B == value_test_int_b.value_default
 
+    # check that resulting values NOT based on conditions
     with client.values({variable.name: f.pystr()}) as values:
-        assert values.TEST == "nottest"
-        assert values.TEST_INT == 2
+        assert values.TEST == value_test.value_override
+        assert values.TEST_INT_A == value_test_int_a.value_override
+        assert values.TEST_INT_B == value_test_int_b.value_default
 
+    # check that each .values call is isolated
     with client.values({variable.name: check.value}) as values:
         assert values.TEST is value_condition.value_override
-        assert values.TEST_INT is value_condition_int_value.value_override
+        assert values.TEST_INT_A is value_condition_int_value.value_override
+        assert values.TEST_INT_B == value_test_int_b.value_default
 
     # close client connection.
     await manager.close()

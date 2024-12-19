@@ -27,7 +27,15 @@ class Values:
         value = self._overrides.get(name)
         if value is None:
             check = self._manager.get_value(name)
-            value = check(self._ctx) if check is not None else default
+            if callable(check):
+                # evaluated value
+                value = check(self._ctx)
+            elif check is not None:
+                # default value from server
+                value = check
+            else:
+                # default value from client code
+                value = default
 
         # caching/snapshotting
         setattr(self, name, value)
