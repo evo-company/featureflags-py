@@ -1,5 +1,6 @@
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Any, Dict, Generator, Optional, Union, cast
+from typing import Any, Optional, Union, cast
 
 from featureflags_client.http.flags import Flags
 from featureflags_client.http.managers.base import (
@@ -20,9 +21,9 @@ class FeatureFlagsClient:
     @contextmanager
     def flags(
         self,
-        ctx: Optional[Dict[str, Any]] = None,
+        ctx: Optional[dict[str, Any]] = None,
         *,
-        overrides: Optional[Dict[str, bool]] = None,
+        overrides: Optional[dict[str, bool]] = None,
     ) -> Generator[Flags, None, None]:
         """
         Context manager to wrap your request handling code and get actual
@@ -33,9 +34,9 @@ class FeatureFlagsClient:
     @contextmanager
     def values(
         self,
-        ctx: Optional[Dict[str, Any]] = None,
+        ctx: Optional[dict[str, Any]] = None,
         *,
-        overrides: Optional[Dict[str, Union[int, str]]] = None,
+        overrides: Optional[dict[str, Union[int, str]]] = None,
     ) -> Generator[Values, None, None]:
         """
         Context manager to wrap your request handling code and get actual

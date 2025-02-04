@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Dict, List, Optional, Union
+from typing import Callable, Optional, Union
 
 from featureflags_client.http.conditions import (
     update_flags_state,
@@ -13,21 +13,21 @@ from featureflags_client.http.types import (
 
 
 class BaseState(ABC):
-    variables: List[Variable]
-    flags: List[str]
-    values: List[str]
+    variables: list[Variable]
+    flags: list[str]
+    values: list[str]
     project: str
     version: int
 
-    _flags_state: Dict[str, Callable[..., bool]]
-    _values_state: Dict[str, Callable[..., Union[int, str]]]
+    _flags_state: dict[str, Callable[..., bool]]
+    _values_state: dict[str, Callable[..., Union[int, str]]]
 
     def __init__(
         self,
         project: str,
-        variables: List[Variable],
-        flags: List[str],
-        values: List[str],
+        variables: list[Variable],
+        flags: list[str],
+        values: list[str],
     ) -> None:
         self.project = project
         self.variables = variables
@@ -38,19 +38,19 @@ class BaseState(ABC):
         self._flags_state = {}
         self._values_state = {}
 
-    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
+    def get_flag(self, name: str) -> Optional[Callable[[dict], bool]]:
         return self._flags_state.get(name)
 
     def get_value(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+    ) -> Optional[Callable[[dict], Union[int, str]]]:
         return self._values_state.get(name)
 
     @abstractmethod
     def update(
         self,
-        flags: List[Flag],
-        values: List[Value],
+        flags: list[Flag],
+        values: list[Value],
         version: int,
     ) -> None:
         pass
@@ -59,8 +59,8 @@ class BaseState(ABC):
 class HttpState(BaseState):
     def update(
         self,
-        flags: List[Flag],
-        values: List[Value],
+        flags: list[Flag],
+        values: list[Value],
         version: int,
     ) -> None:
         if self.version != version:

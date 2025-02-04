@@ -9,15 +9,15 @@ authors = [
     { name = "Vladimir Magamedov", email = "vladimir@magamedov.com" },
 ]
 dependencies = [
-    "dataclass-wizard==v0.22.2",
+    "dataclass-wizard~=0.26",
 ]
 requires-python = ">=3.9"
 license = { text = "MIT" }
 
 [project.optional-dependencies]
-httpx = ["httpx~=0.24.1"]
-aiohttp = ["aiohttp~=3.9.1"]
-requests = ["requests~=2.31.0"]
+httpx = ["httpx~=0.25"]
+aiohttp = ["aiohttp~=3.10"]
+requests = ["requests~=2.32"]
 
 [build-system]
 requires = ["pdm-backend"]
@@ -50,15 +50,15 @@ test = [
     "faker==18.13",
     "tox-pdm==0.7.0",
     "protobuf<4.0.0",
-    "httpx>=0.24.1",
-    "aiohttp>=3.9.1",
-    "requests>=2.31.0",
+    "httpx>=0.25",
+    "aiohttp>=3.10",
+    "requests>=2.32",
 ]
 lint = [
-    "black>=23.3.0",
-    "ruff>=0.1.0",
-    "mypy>=1.4.1",
-    "types-requests>=2.31.0.20240106",
+    "black>=24.8.0",
+    "ruff>=0.9.0",
+    "mypy>=1.14.1",
+    "types-requests>=2.32.0.20241016",
 ]
 docs = [
     "sphinx==5.3.0",
@@ -66,11 +66,11 @@ docs = [
     "sphinxcontrib-asyncio==0.3.0",
 ]
 examples = [
-    "aiohttp>=3.8.6",
-    "flask>=2.2.5",
-    "sanic>=23.3.0",
-    "httpx>=0.24.1",
-    "requests>=2.31.0",
+    "aiohttp>=3.10",
+    "flask>=2.3.3",
+    "sanic>=24.12.0",
+    "httpx>=0.25",
+    "requests>=2.32",
 ]
 
 [tool.pytest.ini_options]
@@ -99,6 +99,10 @@ extend-exclude = '''
 '''
 
 [tool.ruff]
+line-length = 80
+target-version = "py39"
+
+[tool.ruff.lint]
 select = [
     "E", # pycodestyle errors
     "W", # pycodestyle warnings
@@ -154,12 +158,10 @@ exclude = [
     ".ve",
     "__pycache__",
 ]
-line-length = 80
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py38"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "featureflags_client/tests/*" = [
     "A002",
     "E501",
@@ -172,15 +174,18 @@ target-version = "py38"
     "DTZ003",
     "T201",
 ]
+"featureflags_client/http/types.py" = [
+    "A005",  # Module `types` shadows a Python standard-library module
+]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 10
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["featureflags_client"]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 follow_imports = "skip"
 pretty = true
 strict_optional = false

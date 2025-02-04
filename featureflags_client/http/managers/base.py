@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from enum import EnumMeta
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Optional, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.state import HttpState
@@ -26,8 +26,8 @@ log = logging.getLogger(__name__)
 
 
 def _values_defaults_to_tuple(
-    values: List[str], values_defaults: Dict[str, Union[int, str]]
-) -> List[Tuple[str, Union[int, str]]]:
+    values: list[str], values_defaults: dict[str, Union[int, str]]
+) -> list[tuple[str, Union[int, str]]]:
     result = []
     for value in values:
         value_default = values_defaults.get(value, "")
@@ -49,10 +49,10 @@ class BaseManager(ABC):
         self,
         url: str,
         project: str,
-        variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        variables: list[Variable],
+        defaults: Union[EnumMeta, type, dict[str, bool]],
         values_defaults: Optional[
-            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+            Union[EnumMeta, type, dict[str, Union[int, str]]]
         ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 60,  # 1 minute.
@@ -82,9 +82,9 @@ class BaseManager(ABC):
     def _post(
         self,
         url: Endpoints,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timeout: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         pass
 
     def _check_sync(self) -> None:
@@ -109,13 +109,13 @@ class BaseManager(ABC):
                     self._next_sync,
                 )
 
-    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
+    def get_flag(self, name: str) -> Optional[Callable[[dict], bool]]:
         self._check_sync()
         return self._state.get_flag(name)
 
     def get_value(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+    ) -> Optional[Callable[[dict], Union[int, str]]]:
         self._check_sync()
         return self._state.get_value(name)
 
@@ -183,10 +183,10 @@ class AsyncBaseManager(BaseManager):
         self,
         url: str,
         project: str,
-        variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        variables: list[Variable],
+        defaults: Union[EnumMeta, type, dict[str, bool]],
         values_defaults: Optional[
-            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+            Union[EnumMeta, type, dict[str, Union[int, str]]]
         ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
@@ -206,21 +206,21 @@ class AsyncBaseManager(BaseManager):
     async def _post(  # type: ignore
         self,
         url: Endpoints,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timeout: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         pass
 
     @abstractmethod
     async def close(self) -> None:
         pass
 
-    def get_flag(self, name: str) -> Optional[Callable[[Dict], bool]]:
+    def get_flag(self, name: str) -> Optional[Callable[[dict], bool]]:
         return self._state.get_flag(name)
 
     def get_value(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[int, str]]]:
+    ) -> Optional[Callable[[dict], Union[int, str]]]:
         return self._state.get_value(name)
 
     async def preload(self) -> None:  # type: ignore

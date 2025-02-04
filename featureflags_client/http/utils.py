@@ -1,11 +1,12 @@
 import hashlib
 import inspect
 import struct
+from collections.abc import Generator, Mapping
 from enum import Enum, EnumMeta
-from typing import Any, Dict, Generator, Mapping, Type, Union
+from typing import Any, Union
 
 
-def custom_asdict_factory(data: Any) -> Dict:
+def custom_asdict_factory(data: Any) -> dict:
     def convert_value(obj: Any) -> Any:
         if isinstance(obj, Enum):
             return obj.value
@@ -15,10 +16,10 @@ def custom_asdict_factory(data: Any) -> Dict:
 
 
 def coerce_defaults(
-    defaults: Union[EnumMeta, Type, Dict[str, bool]],
-) -> Dict[str, bool]:
+    defaults: Union[EnumMeta, type, dict[str, bool]],
+) -> dict[str, bool]:
     if isinstance(defaults, EnumMeta):  # deprecated
-        defaults = {k: v.value for k, v in defaults.__members__.items()}
+        defaults = {k: v.value for k, v in defaults.__members__.items()}  # type: ignore[var-annotated]
     elif inspect.isclass(defaults):
         defaults = {
             k: getattr(defaults, k)
@@ -42,10 +43,10 @@ def coerce_defaults(
 
 
 def coerce_values_defaults(
-    defaults: Union[EnumMeta, Type, Dict[str, Union[int, str]]],
-) -> Dict[str, Union[int, str]]:
+    defaults: Union[EnumMeta, type, dict[str, Union[int, str]]],
+) -> dict[str, Union[int, str]]:
     if isinstance(defaults, EnumMeta):  # deprecated
-        defaults = {k: v.value for k, v in defaults.__members__.items()}
+        defaults = {k: v.value for k, v in defaults.__members__.items()}  # type: ignore[var-annotated]
     elif inspect.isclass(defaults):
         defaults = {
             k: getattr(defaults, k)
