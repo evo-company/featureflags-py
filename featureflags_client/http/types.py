@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Tuple, Union
+from typing import Union
 
 from dataclass_wizard import JSONWizard
 
@@ -36,17 +36,17 @@ class CheckVariable:
 class Check:
     operator: Operator
     variable: CheckVariable
-    value: Union[str, float, List[str], None] = None
+    value: Union[str, float, list[str], None] = None
 
 
 @dataclass
 class Condition:
-    checks: List[Check]
+    checks: list[Check]
 
 
 @dataclass
 class ValueCondition:
-    checks: List[Check]
+    checks: list[Check]
     value_override: Union[int, str]
 
 
@@ -55,7 +55,7 @@ class Flag:
     name: str
     enabled: bool
     overridden: bool
-    conditions: List[Condition]
+    conditions: list[Condition]
 
 
 @dataclass
@@ -65,14 +65,14 @@ class Value:
     overridden: bool
     value_default: Union[int, str]
     value_override: Union[int, str]
-    conditions: List[ValueCondition]
+    conditions: list[ValueCondition]
 
 
 @dataclass
 class RequestData:
     project_name: str
-    flags: List[Flag]
-    values: List[Value]
+    flags: list[Flag]
+    values: list[Value]
 
 
 @dataclass
@@ -85,28 +85,28 @@ class Variable:
 class PreloadFlagsRequest:
     project: str
     version: int
-    variables: List[Variable] = field(default_factory=list)
-    flags: List[str] = field(default_factory=list)
-    values: List[Tuple[str, Union[str, int]]] = field(default_factory=list)
+    variables: list[Variable] = field(default_factory=list)
+    flags: list[str] = field(default_factory=list)
+    values: list[tuple[str, Union[str, int]]] = field(default_factory=list)
 
 
 @dataclass
 class PreloadFlagsResponse(JSONWizard):
     version: int
-    flags: List[Flag] = field(default_factory=list)
-    values: List[Value] = field(default_factory=list)
+    flags: list[Flag] = field(default_factory=list)
+    values: list[Value] = field(default_factory=list)
 
 
 @dataclass
 class SyncFlagsRequest:
     project: str
     version: int
-    flags: List[str] = field(default_factory=list)
-    values: List[str] = field(default_factory=list)
+    flags: list[str] = field(default_factory=list)
+    values: list[str] = field(default_factory=list)
 
 
 @dataclass
 class SyncFlagsResponse(JSONWizard):
     version: int
-    flags: List[Flag] = field(default_factory=list)
-    values: List[Value] = field(default_factory=list)
+    flags: list[Flag] = field(default_factory=list)
+    values: list[Value] = field(default_factory=list)

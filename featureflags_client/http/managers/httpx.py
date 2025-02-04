@@ -1,6 +1,6 @@
 import logging
 from enum import EnumMeta
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Optional, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.managers.base import (
@@ -28,10 +28,10 @@ class HttpxManager(AsyncBaseManager):
         self,
         url: str,
         project: str,
-        variables: List[Variable],
-        defaults: Union[EnumMeta, Type, Dict[str, bool]],
+        variables: list[Variable],
+        defaults: Union[EnumMeta, type, dict[str, bool]],
         values_defaults: Optional[
-            Union[EnumMeta, Type, Dict[str, Union[int, str]]]
+            Union[EnumMeta, type, dict[str, Union[int, str]]]
         ] = None,
         request_timeout: int = 5,
         refresh_interval: int = 10,
@@ -53,9 +53,9 @@ class HttpxManager(AsyncBaseManager):
     async def _post(  # type: ignore
         self,
         url: Endpoints,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timeout: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         response = await self._session.post(
             url=httpx.URL(url.value),
             json=payload,

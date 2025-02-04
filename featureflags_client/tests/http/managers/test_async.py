@@ -144,19 +144,19 @@ async def test_values_manager(
     with client.values({variable.name: check.value}) as values:
         assert values.TEST is value_condition.value_override
         assert values.TEST_INT_A is value_condition_int_value.value_override
-        assert values.TEST_INT_B == value_test_int_b.value_default
+        assert value_test_int_b.value_default == values.TEST_INT_B
 
     # check that resulting values NOT based on conditions
     with client.values({variable.name: f.pystr()}) as values:
-        assert values.TEST == value_test.value_override
-        assert values.TEST_INT_A == value_test_int_a.value_override
-        assert values.TEST_INT_B == value_test_int_b.value_default
+        assert value_test.value_override == values.TEST
+        assert value_test_int_a.value_override == values.TEST_INT_A
+        assert value_test_int_b.value_default == values.TEST_INT_B
 
     # check that each .values call is isolated
     with client.values({variable.name: check.value}) as values:
         assert values.TEST is value_condition.value_override
         assert values.TEST_INT_A is value_condition_int_value.value_override
-        assert values.TEST_INT_B == value_test_int_b.value_default
+        assert value_test_int_b.value_default == values.TEST_INT_B
 
     # close client connection.
     await manager.close()

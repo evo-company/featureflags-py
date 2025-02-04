@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from featureflags_client.http.managers.base import BaseManager
 
@@ -11,8 +11,8 @@ class Flags:
     def __init__(
         self,
         manager: BaseManager,
-        ctx: Optional[Dict[str, Any]] = None,
-        overrides: Optional[Dict[str, bool]] = None,
+        ctx: Optional[dict[str, Any]] = None,
+        overrides: Optional[dict[str, bool]] = None,
     ) -> None:
         self._manager = manager
         self._defaults = manager.defaults

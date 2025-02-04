@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 from featureflags_client.http.constants import Endpoints
 from featureflags_client.http.managers.base import (
@@ -18,7 +18,7 @@ class DummyManager(BaseManager):
 
     def get(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
+    ) -> Optional[Callable[[dict], Union[bool, int, str]]]:
         """
         So that `featureflags.http.flags.Flags` will use default values.
         """
@@ -33,9 +33,9 @@ class DummyManager(BaseManager):
     def _post(
         self,
         url: Endpoints,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timeout: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         pass
 
 
@@ -47,7 +47,7 @@ class AsyncDummyManager(AsyncBaseManager):
 
     def get(
         self, name: str
-    ) -> Optional[Callable[[Dict], Union[bool, int, str]]]:
+    ) -> Optional[Callable[[dict], Union[bool, int, str]]]:
         """
         So that `featureflags.http.flags.Flags` will use default values.
         """
@@ -56,9 +56,9 @@ class AsyncDummyManager(AsyncBaseManager):
     async def _post(  # type: ignore
         self,
         url: Endpoints,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         timeout: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         pass
 
     async def close(self) -> None:
